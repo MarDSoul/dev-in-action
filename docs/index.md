@@ -7,6 +7,8 @@ Colleague, if you want to work with me, here are my contacts:
 
 - [Resume (PDF, EN)](assets/pdf/resume/Aleksei_Laptev_Android_Resume_en.pdf)
 - [Resume (PDF, RU)](assets/pdf/resume/Aleksei_Laptev_Android_Resume_ru.pdf)
+- [:fontawesome-brands-linkedin: LinkedIn Profile](https://www.linkedin.com/in/aleksei-laptev/)
+- [:fontawesome-brands-github: GitHub Profile](https://github.com/MarDSoul)
 
 Just hand this resume to your HR with the words: "Hey, I wanna work with this guy" :fontawesome-regular-face-smile:
 
