@@ -1,0 +1,910 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Technical insights and practical guides across Android development.">
+      
+      
+      
+        <link rel="canonical" href="https://mardsoul.github.io/dev-in-action/articles/reverse-basic-example/">
+      
+      
+        <link rel="prev" href="../using-mockk-preview/">
+      
+      
+        <link rel="next" href="../sharing-data-between-viewmodels/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Simple example of reverse .apk - Dev In Action</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/mkdocs_puml/puml.css">
+    
+      <link rel="stylesheet" href="../../assets/mkdocs_puml/interaction.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#simple-example-of-reverse-apk-removing-ads" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Dev In Action" class="md-header__button md-logo" aria-label="Dev In Action" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dev In Action
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Simple example of reverse .apk
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home/Profile
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Articles
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Dev In Action" class="md-nav__button md-logo" aria-label="Dev In Action" data-md-component="logo">
+      
+  <img src="../../assets/images/logo.svg" alt="logo">
+
+    </a>
+    Dev In Action
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home/Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Articles
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Articles
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Android Clean Architecture in Action
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Android Clean Architecture in Action
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arch-principles/android-ca-independent-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Intro (Part 1). Example with independent features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../arch-principles/android-ca-complex-navigation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Going ahead (Part 2). Example with complex navigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../using-mockk-preview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using MockK library in Jetpack Compose Preview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Simple example of reverse .apk
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Simple example of reverse .apk
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tools
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Process
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Process">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-apk-file-by-apk-extractor-fastest-suppor-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Get .apk file by Apk Extractor Fastest &amp; Suppor itself.
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#discover-java-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Discover Java code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#extract-and-change-smali-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extract and change Smali code
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pack-to-apk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pack to .apk
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-and-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install and run
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sharing-data-between-viewmodels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sharing data between ViewModels
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="simple-example-of-reverse-apk-removing-ads">Simple example of reverse .apk (removing Ads)</h1>
+<p><strong>Date of publication:</strong> 10 Mar 2025</p>
+<p>Okay, today I gonna do some simple reverse engineering on Android application. As an example I get an amazing application <a href="https://play.google.com/store/apps/details?id=com.iraavanan.apkextractor">Apk Extractor Fastest &amp; Suppor</a></p>
+<h3 id="tools">Tools</h3>
+<ul>
+<li><a href="https://github.com/skylot/jadx">JADX</a> - for discovering code in Java</li>
+<li><a href="https://apktool.org/">Apktool</a> - for editing code in Smali</li>
+<li><a href="https://developer.android.com/tools">Android SDK build tools</a> - for compress and sign</li>
+</ul>
+<h3 id="process">Process</h3>
+<h4 id="get-apk-file-by-apk-extractor-fastest-suppor-itself">Get .apk file by <a href="https://play.google.com/store/apps/details?id=com.iraavanan.apkextractor">Apk Extractor Fastest &amp; Suppor</a> itself.</h4>
+<p><img alt="Main screen of APK Extractor" src="../../assets/images/reverse-basic-example/start-screen.png" /></p>
+<p>What we see? We see a terrible Ads in so wonderful application.</p>
+<h4 id="discover-java-code">Discover Java code</h4>
+<ul>
+<li>open our .apk by <a href="https://github.com/skylot/jadx">JADX</a></li>
+</ul>
+<p>And we can see something like this:
+<img alt="JADX screen" src="../../assets/images/reverse-basic-example/jadx-interface.png" /></p>
+<ul>
+<li>Fist of all we have to see <code>AndroidManifest.xml</code>.
+<em>Oh, bro, thanks a lot!</em>
+<div class="language-xml highlight"><span class="filename">XML</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">&lt;activity</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="na">android:name=</span><span class="s">&quot;com.iraavanan.apkextractor.ad.NoAdsActivity&quot;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="na">android:screenOrientation=</span><span class="s">&quot;portrait&quot;</span><span class="nt">/&gt;</span>
+</span></code></pre></div></li>
+<li>Let's see <code>NoAdsActivity</code>, obviously. </li>
+</ul>
+<p>The path in the JADX is </p>
+<p><code>Source code/com.iraavanan.apkextractor.ad.NoAdsActivity</code>.
+<div class="language-java highlight"><span class="filename">Java</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onCreate</span><span class="p">(</span><span class="n">Bundle</span><span class="w"> </span><span class="n">bundle</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="kd">super</span><span class="p">.</span><span class="na">onCreate</span><span class="p">(</span><span class="n">bundle</span><span class="p">);</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">setContentView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="na">layout</span><span class="p">.</span><span class="na">activity_no_ads</span><span class="p">);</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="n">ActionBar</span><span class="w"> </span><span class="n">supportActionBar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getSupportActionBar</span><span class="p">();</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">supportActionBar</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="n">supportActionBar</span><span class="p">.</span><span class="na">setTitle</span><span class="p">(</span><span class="n">getString</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">premium</span><span class="p">));</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="n">ActionBar</span><span class="w"> </span><span class="n">supportActionBar2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getSupportActionBar</span><span class="p">();</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">supportActionBar2</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">        </span><span class="n">supportActionBar2</span><span class="p">.</span><span class="na">setDisplayHomeAsUpEnabled</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="n">com</span><span class="p">.</span><span class="na">iraavanan</span><span class="p">.</span><span class="na">apkextractor</span><span class="p">.</span><span class="na">g</span><span class="p">.</span><span class="na">f</span><span class="w"> </span><span class="n">fVar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">com</span><span class="p">.</span><span class="na">iraavanan</span><span class="p">.</span><span class="na">apkextractor</span><span class="p">.</span><span class="na">g</span><span class="p">.</span><span class="na">f</span><span class="p">.</span><span class="na">a</span><span class="p">;</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">fVar</span><span class="p">.</span><span class="na">b</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="na">getBoolean</span><span class="p">(</span><span class="n">getString</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">is_premium</span><span class="p">),</span><span class="w"> </span><span class="kc">false</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="n">J</span><span class="p">();</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">        </span><span class="k">return</span><span class="p">;</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1">// some code</span>
+</span></code></pre></div>
+<em>OMG, bro, do you really keep a premium flag in SharedPreferences?!</em></p>
+<p><em>When I saw it I thought to get another example, but it's OK. It's simple and visible.</em></p>
+<h4 id="extract-and-change-smali-code">Extract and change Smali code</h4>
+<ul>
+<li>Execute apktool: </li>
+</ul>
+<p><code>/opt/apktool/apktool d ApkExtractor_com.iraavanan.apkextractor.apk</code></p>
+<p>So we've got a folder <code>ApkExtractor_com.iraavanan.apkextractor</code> with Smali code. You can open this folder as a project in Android Studio. Our activity in on the same path: <code>smali/com.iraavanan.apkextractor.ad.NoAdsActivity.smali</code></p>
+<ul>
+<li>look for the condition in the <code>onCreate()</code> function</li>
+</ul>
+<div class="language-smali highlight"><span class="filename">Smali</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nl">:cond_1</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>sget-object<span class="w"> </span><span class="nb">p1</span><span class="p">,</span><span class="w"> </span><span class="kt">L</span>com/iraavanan/apkextractor/g/<span class="nc">f</span>;<span class="p">-&gt;</span><span class="nv">a</span><span class="p">:</span><span class="kt">L</span>com/iraavanan/apkextractor/g/<span class="nc">f</span>;
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>invoke-virtual<span class="w"> </span><span class="p">{</span><span class="nb">p1</span><span class="p">,</span><span class="w"> </span><span class="nb">p0</span><span class="p">},</span><span class="w"> </span><span class="kt">L</span>com/iraavanan/apkextractor/g/<span class="nc">f</span>;<span class="p">-&gt;</span><span class="nf">b</span><span class="p">(</span><span class="kt">L</span>android/content/<span class="nc">Context</span>;<span class="p">)</span><span class="kt">L</span>android/content/<span class="nc">SharedPreferences</span>;
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>move-result-object<span class="w"> </span><span class="nb">v0</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>const<span class="w"> </span><span class="nb">v1</span><span class="p">,</span><span class="w"> </span><span class="mh">0x7f10004a</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>invoke-virtual<span class="w"> </span><span class="p">{</span><span class="nb">p0</span><span class="p">,</span><span class="w"> </span><span class="nb">v1</span><span class="p">},</span><span class="w"> </span><span class="kt">L</span>android/app/<span class="nc">Activity</span>;<span class="p">-&gt;</span><span class="nf">getString</span><span class="p">(</span><span class="kt">I</span><span class="p">)</span><span class="kt">L</span>java/lang/<span class="nc">String</span>;
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>move-result-object<span class="w"> </span><span class="nb">v1</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>const/4<span class="w"> </span><span class="nb">v2</span><span class="p">,</span><span class="w"> </span><span class="mh">0x0</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>invoke-interface<span class="w"> </span><span class="p">{</span><span class="nb">v0</span><span class="p">,</span><span class="w"> </span><span class="nb">v1</span><span class="p">,</span><span class="w"> </span><span class="nb">v2</span><span class="p">},</span><span class="w"> </span><span class="kt">L</span>android/content/<span class="nc">SharedPreferences</span>;<span class="p">-&gt;</span><span class="nf">getBoolean</span><span class="p">(</span><span class="kt">L</span>java/lang/<span class="nc">String</span>;<span class="kt">Z</span><span class="p">)</span><span class="kt">Z</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>move-result<span class="w"> </span><span class="nb">v0</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>if-eqz<span class="w"> </span><span class="nb">v0</span><span class="p">,</span><span class="w"> </span><span class="nl">:cond_2</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a>invoke-direct<span class="w"> </span><span class="p">{</span><span class="nb">p0</span><span class="p">},</span><span class="w"> </span><span class="kt">L</span>com/iraavanan/apkextractor/ad/<span class="nc">NoAdsActivity</span>;<span class="p">-&gt;</span><span class="nf">J</span><span class="p">()</span><span class="kt">V</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a>goto/16<span class="w"> </span><span class="nl">:goto_1</span>
+</span></code></pre></div>
+<p>Looks not so nice :) Let's define what happens. <a href="http://pallergabor.uw.hu/androidblog/dalvik_opcodes.html">Dalvik opcodes</a></p>
+<ul>
+<li><code>sget-object p1 //etc</code> - we are getting some object and put it into <code>p1</code></li>
+<li><code>invoke-virtual {p1, p0} //etc</code> - execute some function on <code>p1</code> object, <code>p0</code> is the pointer to our activity... possibly :) It looks like we've got SharedPreferences</li>
+<li><code>move-result-object v0</code> - put SharedPreferences into <code>v0</code></li>
+<li><code>const v1, 0x7f10004a</code> - some const similar like ID of resource</li>
+<li><code>invoke-virtual {p0, v1} //etc</code> - activity of <code>p0</code> getting string resource by <code>v1</code> ID</li>
+<li><code>move-result-object v1</code> - put that string into <code>v1</code></li>
+<li><code>const/4 v2, 0x0</code> - define the <em>false</em> constant</li>
+<li><code>invoke-interface {v0, v1, v2} //etc</code> - our key function what defines premium</li>
+<li><code>move-result v0</code> - result of function into <code>v0</code></li>
+<li><code>if-eqz v0, :cond_2</code> - if our result is <em>0(false)</em> the program go to <code>:cond_2</code></li>
+</ul>
+<p>Obviously, we have to change the result of function.
+<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>move-result v0
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>const/4 v0, 0x1
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>if-eqz v0, :cond_2
+</span></code></pre></div></p>
+<h4 id="pack-to-apk">Pack to .apk</h4>
+<ul>
+<li>build an .apk file</li>
+</ul>
+<p><code>/opt/apktool/apktool b ApkExtractor_com.iraavanan.apkextractor -o apkextractor.apk</code>
+- compress .apk</p>
+<p><code>zipalign -v -p 4 apkextractor.apk apkextractor_compressed.apk</code>
+- create key for signing by <a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html#keytool_option_genkeypair">keytool</a></p>
+<p><code>keytool -genkeypair -v -keystore release-key.keystore -alias apkextractor -keyalg RSA -keysize 2048</code>
+- sign</p>
+<p><code>apksigner sign --ks release-key.keystore --ks-key-alias apkextractor --out apkextractor_signed.apk apkextractor_compressed.apk</code></p>
+<h4 id="install-and-run">Install and run</h4>
+<ul>
+<li>remove the base app version</li>
+</ul>
+<p><code>adb uninstall com.iraavanan.apkextractor</code>
+- install changed version</p>
+<p><code>adb install apkextractor_signed.apk</code>
+- run</p>
+<p><img alt="Main screen of APK Extractor with Ads" src="../../assets/images/reverse-basic-example/start-screen-after-fix.png" /></p>
+<p><em>Hmm... something went wrong...</em></p>
+<p>Okay, maybe I should go to premium option in the app.</p>
+<p><img alt="Premium screen of APK Extractor" src="../../assets/images/reverse-basic-example/premium-screen.png" /></p>
+<p>Let's recreate activity by <code>Back</code> button or rotate screen.</p>
+<p><img alt="Main screen of APK Extractor without Ads" src="../../assets/images/reverse-basic-example/start-screen-no-ads.png" /></p>
+<p>So... that's all, no Ads.</p>
+<hr />
+<p><em>What do I wanna say at the end? Don't keep premium flags inside the app.</em></p>
+<p><em>Thanks for your attention!</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Content is licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. Code snippets are under <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">MIT License</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.indexes", "content.code.copy", "toc.integrate"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="../../assets/mkdocs_puml/puml.js"></script>
+      
+        <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+      
+        <script src="../../assets/mkdocs_puml/interaction.js"></script>
+      
+    
+  </body>
+</html>

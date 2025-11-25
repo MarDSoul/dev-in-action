@@ -1,0 +1,938 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Technical insights and practical guides across Android development.">
+      
+      
+      
+        <link rel="canonical" href="https://mardsoul.github.io/dev-in-action/articles/arch-principles/android-ca-independent-features/">
+      
+      
+        <link rel="prev" href="../../">
+      
+      
+        <link rel="next" href="../android-ca-complex-navigation/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Intro (Part 1). Example with independent features - Dev In Action</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/mkdocs_puml/puml.css">
+    
+      <link rel="stylesheet" href="../../../assets/mkdocs_puml/interaction.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#intro-to-clean-architecture-in-android-example-with-independent-features" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Dev In Action" class="md-header__button md-logo" aria-label="Dev In Action" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dev In Action
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Intro (Part 1). Example with independent features
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home/Profile
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Articles
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Dev In Action" class="md-nav__button md-logo" aria-label="Dev In Action" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.svg" alt="logo">
+
+    </a>
+    Dev In Action
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home/Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Articles
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Articles
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Android Clean Architecture in Action
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Android Clean Architecture in Action
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Intro (Part 1). Example with independent features
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Intro (Part 1). Example with independent features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#intro" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Intro
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Intro">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#domain-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain layer
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usecases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UseCases
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 1
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example 1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generally-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generally structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-core-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain Core module
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-shared-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Domain Shared module
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feature-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feature module
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../android-ca-complex-navigation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Going ahead (Part 2). Example with complex navigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../using-mockk-preview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using MockK library in Jetpack Compose Preview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reverse-basic-example/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Simple example of reverse .apk
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sharing-data-between-viewmodels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sharing data between ViewModels
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="intro-to-clean-architecture-in-android-example-with-independent-features">Intro to Clean Architecture in Android. Example with independent features.</h1>
+<p><strong>Date of publication:</strong> 10 Nov 2025</p>
+<h2 id="intro">Intro</h2>
+<p>There are lots of articles about Clean Architecture:</p>
+<ul>
+<li><a href="https://developer.android.com/topic/architecture">Google guide</a></li>
+<li><a href="https://www.google.com/search?q=android+clean+architecture">Google search</a></li>
+<li><a href="https://www.google.com/search?q=android+clean+architecture&amp;udm=50&amp;fbs=AIIjpHxU7SXXniUZfeShr2fp4giZ1Y6MJ25_tmWITc7uy4KIeoJTKjrFjVxydQWqI2NcOhYPURIv2wPgv_w_sE_0Sc6QqqU7k8cSQndc5mTXCIWHa5yWh8UZLeaMB2TzsL707pcnajOVzuG8nS7sxlcHlHT7cLHEsNnGrA7u6eJqizJIVn4bAZJhxiQ_p9h3E1L5D4qlMKnP-aQXBIIHnP3WnQdd-Mmhzw&amp;ved=2ahUKEwijnprIhOGQAxXVnf0HHbibGvEQ0NsOegQIOBAA&amp;aep=10&amp;ntc=1&amp;mstk=AUtExfCb2XbKzgnqakTo_O5wA2sOqY7X-TLshBNYoSZngI5OmoOWqBsj0o-C23xgb1ldfrfoBf1Acsr3yA3JeWCgzSSSrZXxjLveCuNEMIHjoZxp1vgI3clahTEQf6zwCaS8kBbVdlYhAtqUhUQ6h1Dgnbi_65TPh98-0UE&amp;csuir=1">Google Gemini</a> he, he..</li>
+</ul>
+<p>So, I don't wanna copy those guides and my advice is <strong>read them carefully</strong>. But I have to write about <strong>domain layer</strong> for excluding confusion of terms.</p>
+<h3 id="domain-layer">Domain layer</h3>
+<p>There is something wrong with understanding <strong>domain layer</strong> in the Android development context. Here's the quote from the <a href="https://developer.android.com/topic/architecture/domain-layer">Google guide</a>:</p>
+<blockquote>
+<p>Note: The term "domain layer" is used in other software architectures, such as "clean" architecture, and has a different meaning there. Don't confuse the definition of "domain layer" defined in the Android official architecture guidance with other definitions you may have read elsewhere. There may be subtle but important differences.</p>
+</blockquote>
+<p>The common pattern of software architecture says that the <strong>domain layer</strong> is <strong>business-logic</strong>. But what is <strong>business-logic</strong> in Android development context? - It's not about <strong>Enterprise</strong> rules, it's about how <strong>transform data for showing</strong> on the smartphone's screen. There is no complex rules or something else. </p>
+<p>Of course, you may have not simple rules for showing data. You may have caching, paging, aggregation, complex calculation, rendering etc. But the core questions are: </p>
+<ol>
+<li>How we show data for user? </li>
+<li>How we collect user's input?</li>
+</ol>
+<p>Okay, in the examples below I'll use <strong>domain layer</strong> as layer with reusable logic with <em>UseCases</em> as in the <a href="https://developer.android.com/topic/architecture/domain-layer#reusable-logic">recommendations</a>.</p>
+<p>On the other side, I try to make <strong>domain layer</strong> as independent layer regardless of <a href="https://developer.android.com/topic/architecture#recommended-app-arch">Google diagram</a> where we see dependency to <strong>data layer</strong>. This is a turn to a classic Clean Architecture.</p>
+<p>So, the domain layer consists from interfaces of UseCases, data classes of models, independent (from other libraries) clear Kotlin logic that is need in many features.</p>
+<h3 id="usecases">UseCases</h3>
+<p>Another point I wanna write about <em>UseCases</em>. There is a common pattern to make <em>UseCases</em> as single function, such as:</p>
+<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">class</span><span class="w"> </span><span class="nc">SomeUseCaseImpl</span><span class="w"> </span><span class="nd">@Inject</span><span class="w"> </span><span class="k">constructor</span><span class="p">(</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">someRepo</span><span class="p">:</span><span class="w"> </span><span class="n">SomeRepository</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">):</span><span class="w"> </span><span class="n">SomeUseCase</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kd">override</span><span class="w"> </span><span class="kd">suspend</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">invoke</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">someRepo</span><span class="p">.</span><span class="na">someAction</span><span class="p">()</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>I don't like this approach. I see in this more complex solution that have to be. You may say: <em>"Bro, it's a <strong>Single responsibility</strong> principle from SOLID"</em>. But in general this is just sophistry, example functions: <code>getMoney()</code>, <code>saveMoney()</code>, <code>changeMoney()</code> etc. Do each of these functions have <strong>Single responsibility</strong>, or we can say that the <code>MoneyUseCase</code> with those all functions has <strong>Single responsibility</strong> of working with money?</p>
+<p><em>Got an idea? Credo: <strong>Less boilerplate, more code elegance</strong></em></p>
+<hr />
+<p><em>In the multi-modules projects the Clean Architecture is the crucial point for maintain in future. So, I'll concentrate in this kind of projects in my examples.</em> </p>
+<h2 id="example-1">Example 1</h2>
+<h3 id="requirements">Requirements</h3>
+<ol>
+<li>Platform is only Android (not CMP/KMP)</li>
+<li>Our project is multi-module</li>
+<li>The <strong>:app</strong> module have a navigation to each screen</li>
+<li>The features have their own screens</li>
+<li>The features are independent on each other</li>
+<li>The feature can't navigate to another feature directly</li>
+<li>There's some pieces of data that have to be in many screens</li>
+</ol>
+<h3 id="structure">Structure</h3>
+<h4 id="generally-structure">Generally structure</h4>
+<div class='puml-container'><div class="puml light" style=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" height="753px" preserveAspectRatio="xMidYMid meet" style="width:1620px;height:753px;background:#FFFFFF;" version="1.1" viewBox="0 0 1620 753" width="1620px" zoomAndPan="magnify" class="diagram"><title>Android modules</title><defs/><g><g class="title" data-source-line="3"><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="133.8613" x="736.5104" y="22.9951">Android modules</text></g><g class="cluster" data-entity="core_package" data-source-line="7" data-uid="ent0003" id="cluster_core_package"><path d="M676.39,294.8769 L717.305,294.8769 A3.75,3.75 0 0 1 719.805,297.3769 L726.805,317.1738 L1013.39,317.1738 A2.5,2.5 0 0 1 1015.89,319.6738 L1015.89,424.9769 A2.5,2.5 0 0 1 1013.39,427.4769 L676.39,427.4769 A2.5,2.5 0 0 1 673.89,424.9769 L673.89,297.3769 A2.5,2.5 0 0 1 676.39,294.8769" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="673.89" x2="726.805" y1="317.1738" y2="317.1738"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="39.915" x="677.89" y="309.872">:core</text></g><g class="cluster" data-entity="domain_package" data-source-line="12" data-uid="ent0006" id="cluster_domain_package"><path d="M53.39,286.8769 L118.4291,286.8769 A3.75,3.75 0 0 1 120.9291,289.3769 L127.9291,309.1738 L265.39,309.1738 A2.5,2.5 0 0 1 267.89,311.6738 L267.89,614.5669 A2.5,2.5 0 0 1 265.39,617.0669 L53.39,617.0669 A2.5,2.5 0 0 1 50.89,614.5669 L50.89,289.3769 A2.5,2.5 0 0 1 53.39,286.8769" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="50.89" x2="127.9291" y1="309.1738" y2="309.1738"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="64.0391" x="54.89" y="301.872">:domain</text></g><g class="cluster" data-entity="data_package" data-source-line="19" data-uid="ent0010" id="cluster_data_package"><path d="M616.39,476.4769 L658.597,476.4769 A3.75,3.75 0 0 1 661.097,478.9769 L668.097,498.7738 L1013.39,498.7738 A2.5,2.5 0 0 1 1015.89,501.2738 L1015.89,743.5669 A2.5,2.5 0 0 1 1013.39,746.0669 L616.39,746.0669 A2.5,2.5 0 0 1 613.89,743.5669 L613.89,478.9769 A2.5,2.5 0 0 1 616.39,476.4769" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="613.89" x2="668.097" y1="498.7738" y2="498.7738"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="41.207" x="617.89" y="491.472">:data</text></g><g class="cluster" data-entity="feature_package" data-source-line="37" data-uid="ent0025" id="cluster_feature_package"><path d="M1050.39,263.0269 L1115.0804,263.0269 A3.75,3.75 0 0 1 1117.5804,265.5269 L1124.5804,285.3237 L1482.39,285.3237 A2.5,2.5 0 0 1 1484.89,287.8237 L1484.89,606.4169 A2.5,2.5 0 0 1 1482.39,608.9169 L1050.39,608.9169 A2.5,2.5 0 0 1 1047.89,606.4169 L1047.89,265.5269 A2.5,2.5 0 0 1 1050.39,263.0269" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="1047.89" x2="1124.5804" y1="285.3237" y2="285.3237"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="63.6904" x="1051.89" y="278.022">:feature</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="98.9775" x="1220.9012" y="300.3189">«android libs»</text></g><g class="entity" data-entity="core_common_module" data-source-line="8" data-uid="ent0004" id="entity_core_common_module"><rect fill="#F1F1F1" height="62.5938" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="141.042" x="858.37" y="348.8769"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="979.412" y="353.8769"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="977.412" y="355.8769"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="977.412" y="359.8769"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="77.0615" x="885.3602" y="381.872">«kotlin lib»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.042" x="873.37" y="398.1689">:core:common</text></g><g class="entity" data-entity="core_ui_module" data-source-line="9" data-uid="ent0005" id="entity_core_ui_module"><rect fill="#F1F1F1" height="62.5938" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="133.6836" x="690.05" y="348.8769"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="803.7336" y="353.8769"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="801.7336" y="355.8769"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="801.7336" y="359.8769"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="91.6836" x="706.05" y="381.872">«android lib»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="52.8281" x="725.4777" y="398.1689">:core:ui</text></g><g class="entity" data-entity="domain_shared_module" data-source-line="13" data-uid="ent0007" id="entity_domain_shared_module"><rect fill="#F1F1F1" height="62.5938" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="149.8672" x="74.96" y="348.8769"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="204.8272" y="353.8769"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="202.8272" y="355.8769"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="202.8272" y="359.8769"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="77.0615" x="106.3628" y="381.872">«kotlin lib»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109.8672" x="89.96" y="398.1689">:domain:shared</text></g><g class="entity" data-entity="domain_core_module" data-source-line="14" data-uid="ent0008" id="entity_domain_core_module"><rect fill="#F1F1F1" height="62.5938" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="132.4971" x="92.64" y="530.4769"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="205.1371" y="535.4769"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="203.1371" y="537.4769"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="203.1371" y="541.4769"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="77.0615" x="115.3578" y="563.472">«kotlin lib»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92.4971" x="107.64" y="579.7689">:domain:core</text></g><g class="entity" data-entity="data_module" data-source-line="20" data-uid="ent0011" id="entity_data_module"><rect fill="#F1F1F1" height="62.5938" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="133.6836" x="791.05" y="530.4769"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="904.7336" y="535.4769"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="902.7336" y="537.4769"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="902.7336" y="541.4769"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="91.6836" x="807.05" y="563.472">«android lib»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.251" x="834.7663" y="579.7689">:data</text></g><g class="entity" data-entity="api_1" data-source-line="21" data-uid="ent0012" id="entity_api_1"><ellipse cx="679.89" cy="701.0669" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="84.7588" x="637.5106" y="731.062">Some_API_1</text></g><g class="entity" data-entity="api_2" data-source-line="22" data-uid="ent0013" id="entity_api_2"><ellipse cx="814.89" cy="701.0669" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="84.7588" x="772.5106" y="731.062">Some_API_2</text></g><g class="entity" data-entity="api_3" data-source-line="23" data-uid="ent0014" id="entity_api_3"><ellipse cx="949.89" cy="701.0669" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="84.7588" x="907.5106" y="731.062">Some_API_3</text></g><g class="entity" data-entity="feature_1" data-source-line="38" data-uid="ent0026" id="entity_feature_1"><rect fill="#F1F1F1" height="46.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="167.0459" x="1072.37" y="357.0269"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1219.4159" y="362.0269"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1217.4159" y="364.0269"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1217.4159" y="368.0269"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="127.0459" x="1087.37" y="390.022">:feature:feature_1</text></g><g class="entity" data-entity="feature_2" data-source-line="39" data-uid="ent0027" id="entity_feature_2"><rect fill="#F1F1F1" height="46.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="167.0459" x="1274.37" y="357.0269"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1421.4159" y="362.0269"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1419.4159" y="364.0269"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1419.4159" y="368.0269"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="127.0459" x="1289.37" y="390.022">:feature:feature_2</text></g><g class="entity" data-entity="feature_3" data-source-line="40" data-uid="ent0028" id="entity_feature_3"><rect fill="#F1F1F1" height="46.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="167.0459" x="1072.37" y="538.6169"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1219.4159" y="543.6169"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1217.4159" y="545.6169"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1217.4159" y="549.6169"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="127.0459" x="1087.37" y="571.612">:feature:feature_3</text></g><g class="entity" data-entity="feature_4" data-source-line="41" data-uid="ent0029" id="entity_feature_4"><rect fill="#F1F1F1" height="46.2969" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="167.0459" x="1274.37" y="538.6169"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1421.4159" y="543.6169"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1419.4159" y="545.6169"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1419.4159" y="549.6169"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="127.0459" x="1289.37" y="571.612">:feature:feature_4</text></g><g class="entity" data-entity="app_module" data-source-line="5" data-uid="ent0002" id="entity_app_module"><rect fill="#F1F1F1" height="62.5938" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="143.3701" x="1405.2" y="129.4369"/><rect fill="#F1F1F1" height="10" style="stroke:#181818;stroke-width:0.5;" width="15" x="1528.5701" y="134.4369"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1526.5701" y="136.4369"/><rect fill="#F1F1F1" height="2" style="stroke:#181818;stroke-width:0.5;" width="4" x="1526.5701" y="140.4369"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="101.3701" x="1421.2" y="162.432">«android app»</text><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31.0693" x="1456.3504" y="178.7289">:app</text></g><g class="entity" data-entity="GMN15" data-source-line="27" data-uid="ent0016" id="entity_GMN15"><path d="M1034.47,688.4969 L1034.47,713.6297 A0,0 0 0 0 1034.47,713.6297 L1239.3172,713.6297 A0,0 0 0 0 1239.3172,713.6297 L1239.3172,698.4969 L1229.3172,688.4969 L1116.6,688.4969 L920.16,593.4069 L1108.6,688.4969 L1034.47,688.4969 A0,0 0 0 0 1034.47,688.4969" fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M1229.3172,688.4969 L1229.3172,698.4969 L1239.3172,698.4969 L1229.3172,688.4969" fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="183.8472" x="1040.47" y="705.5638">repositories implementation</text></g><g class="entity" data-entity="GMN35" data-source-line="52" data-uid="ent0036" id="entity_GMN35"><path d="M1339.89,43.2969 L1339.89,68.4297 A0,0 0 0 0 1339.89,68.4297 L1472.89,68.4297 L1476.89,129.2469 L1480.89,68.4297 L1613.8822,68.4297 A0,0 0 0 0 1613.8822,68.4297 L1613.8822,53.2969 L1603.8822,43.2969 L1339.89,43.2969 A0,0 0 0 0 1339.89,43.2969" fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M1603.8822,43.2969 L1603.8822,53.2969 L1613.8822,53.2969 L1603.8822,43.2969" fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="252.9922" x="1345.89" y="60.3638">Enter point to application + navigation</text></g><g class="entity" data-entity="GMN38" data-source-line="56" data-uid="ent0039" id="entity_GMN38"><path d="M291.46,541.6369 L291.46,581.9025 A0,0 0 0 0 291.46,581.9025 L598.3204,581.9025 A0,0 0 0 0 598.3204,581.9025 L598.3204,551.6369 L588.3204,541.6369 L482.69,541.6369 L703.61,411.8469 L474.69,541.6369 L291.46,541.6369 A0,0 0 0 0 291.46,541.6369" fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M588.3204,541.6369 L588.3204,551.6369 L598.3204,551.6369 L588.3204,541.6369" fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="221.6094" x="297.46" y="558.7038">app theme, common UI elements,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="285.8604" x="297.46" y="573.8366">UI classes (AbstractViewModel for example)</text></g><g class="entity" data-entity="GMN41" data-source-line="61" data-uid="ent0042" id="entity_GMN41"><path d="M6,148.1669 L6,173.2997 A0,0 0 0 0 6,173.2997 L145.89,173.2997 L149.89,348.5269 L153.89,173.2997 L293.7793,173.2997 A0,0 0 0 0 293.7793,173.2997 L293.7793,158.1669 L283.7793,148.1669 L6,148.1669 A0,0 0 0 0 6,148.1669" fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M283.7793,148.1669 L283.7793,158.1669 L293.7793,158.1669 L283.7793,148.1669" fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="266.7793" x="12" y="165.2338">get interfases and their implementations</text></g><g class="entity" data-entity="GMN44" data-source-line="65" data-uid="ent0045" id="entity_GMN44"><path d="M295.12,360.0469 L295.12,400.3125 A0,0 0 0 0 295.12,400.3125 L345.58,400.3125 L195.36,530.1669 L353.58,400.3125 L450.6522,400.3125 A0,0 0 0 0 450.6522,400.3125 L450.6522,370.0469 L440.6522,360.0469 L295.12,360.0469 A0,0 0 0 0 295.12,360.0469" fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><path d="M440.6522,360.0469 L440.6522,370.0469 L450.6522,370.0469 L440.6522,360.0469" fill="#FEFFDD" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="51.3843" x="301.12" y="377.1138">models,</text><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="134.5322" x="301.12" y="392.2466">repository interfases</text></g><g class="link" data-entity-1="domain_shared_module" data-entity-2="domain_core_module" data-source-line="17" data-uid="lnk9" id="link_domain_shared_module_domain_core_module"><path d="M151.42,411.6369 C153.07,444.6669 155.3994,491.0744 157.0594,524.1644" fill="none" id="domain_shared_module-to-domain_core_module" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="157.36,530.1569,160.904,520.9678,157.1095,525.1632,152.9141,521.3686,157.36,530.1569" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="core_common_module" data-entity-2="data_module" data-source-line="30" data-uid="lnk19" id="link_core_common_module_data_module"><path d="M914.6438,417.2165 C901.5838,450.2465 883.07,497.0669 869.99,530.1569" fill="none" id="core_common_module-backto-data_module" style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#181818" points="916.85,411.6369,909.8209,418.5356,915.0115,416.2866,917.2605,421.4772,916.85,411.6369" style="stroke:#181818;stroke-width:1;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="49.6133" x="904.89" y="456.5438">possble</text></g><g class="link" data-entity-1="domain_core_module" data-entity-2="data_module" data-source-line="31" data-uid="lnk21" id="link_domain_core_module_data_module"><path d="M189.3849,525.5944 C213.7649,499.0044 248.53,467.4269 291.39,451.9769 C355.57,428.8369 531.53,438.4069 598.39,451.9769 C671.74,466.8569 750.11,503.1669 801.29,529.9769" fill="none" id="domain_core_module-backto-data_module" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="185.33,530.0169,194.3606,526.0865,188.7091,526.3315,188.464,520.68,185.33,530.0169" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="data_module" data-entity-2="api_1" data-source-line="33" data-uid="lnk22" id="link_data_module_api_1"><path d="M818.39,593.2369 C776.19,625.7869 712.22,675.1269 688.85,693.1569" fill="none" id="data_module-api_1" style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/></g><g class="link" data-entity-1="data_module" data-entity-2="api_2" data-source-line="34" data-uid="lnk23" id="link_data_module_api_2"><path d="M848.35,593.2369 C838.35,625.1569 823.3,673.2169 817.39,692.0769" fill="none" id="data_module-api_2" style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/></g><g class="link" data-entity-1="data_module" data-entity-2="api_3" data-source-line="35" data-uid="lnk24" id="link_data_module_api_3"><path d="M878.31,593.2369 C899.69,625.1569 931.9,673.2169 944.53,692.0769" fill="none" id="data_module-api_3" style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/></g><g class="link" data-entity-1="feature_package" data-entity-2="core_ui_module" data-source-line="44" data-uid="lnk30" id="link_feature_package_core_ui_module"><path d="M1474.2411,284.6867 C1474.0593,284.1834 1473.6038,260.6287 1473.4152,260.1292 C1473.038,259.1302 1472.6471,258.1392 1472.2422,257.1567 C1465.7631,241.4375 1455.685,227.9219 1440.39,219.5269 C1383.7,188.4069 915.08,188.4069 858.39,219.5269 C808.65,246.8369 781.9145,304.3046 768.4245,342.7946" fill="none" id="feature_package-to-core_ui_module" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="766.44,348.4569,773.1917,341.2864,768.0938,343.7383,765.6419,338.6404,766.44,348.4569" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="domain_package" data-entity-2="feature_package" data-source-line="45" data-uid="lnk32" id="link_domain_package_feature_package"><path d="M256.7404,303.226 C258.3288,294.6289 260.5251,264.9985 263.7192,257.1398 C270.1075,241.4225 280.1175,227.9119 295.39,219.5269 C351.15,188.9169 1384.63,188.9169 1440.39,219.5269 C1455.685,227.9219 1465.7631,241.4375 1472.2422,257.1567 C1472.6471,258.1392 1473.038,259.1302 1473.4152,260.1292 C1473.6038,260.6287 1473.789,261.1301 1473.9709,261.6334 C1474.0618,261.8851 1474.1518,284.4341 1474.2411,284.6867" fill="none" id="domain_package-backto-feature_package" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="255.827,309.1561,261.1505,300.8699,256.5882,304.2144,253.2437,299.6521,255.827,309.1561" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="feature_package" data-entity-2="core_common_module" data-source-line="46" data-uid="lnk33" id="link_feature_package_core_common_module"><path d="M1460.9783,285.0904 C1460.6927,284.8126 1459.9781,261.822 1459.6857,261.5495 C1459.101,261.0045 1458.5025,260.4702 1457.89,259.9469 C1389.97,201.9169 1138.88,226.8869 1055.89,259.9469 C1011.32,277.6969 977.0477,314.5807 954.5377,343.8507" fill="none" id="feature_package-to-core_common_module" style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#181818" points="950.88,348.6069,959.5374,343.9111,953.9281,344.6434,953.1958,339.0341,950.88,348.6069" style="stroke:#181818;stroke-width:1;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="49.6133" x="1202.39" y="235.0938">possble</text></g><g class="link" data-entity-1="app_module" data-entity-2="feature_package" data-source-line="49" data-uid="lnk34" id="link_app_module_feature_package"><path d="M1476.89,192.4269 C1476.89,207.1769 1476.89,225.9769 1476.89,245.9403 C1476.89,250.9312 1476.89,255.9947 1476.89,261.0859 C1476.89,261.7223 1476.89,278.656 1476.89,279.2932" fill="none" id="app_module-to-feature_package" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="1476.89,285.2932,1480.89,276.2932,1476.89,280.2932,1472.89,276.2932,1476.89,285.2932" style="stroke:#181818;stroke-width:1;"/></g></g></svg></div><div class="puml dark" style=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" height="753px" preserveAspectRatio="xMidYMid meet" style="width:1620px;height:753px;background:#1B1B1B;" version="1.1" viewBox="0 0 1620 753" width="1620px" zoomAndPan="magnify" class="diagram"><title>Android modules</title><defs/><g><rect fill="#1B1B1B" height="753" style="stroke:none;stroke-width:1;" width="1620" x="0" y="0"/><g class="title" data-source-line="3"><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="133.8613" x="736.5104" y="22.9951">Android modules</text></g><g class="cluster" data-entity="core_package" data-source-line="7" data-uid="ent0003" id="cluster_core_package"><path d="M676.39,294.8769 L717.305,294.8769 A3.75,3.75 0 0 1 719.805,297.3769 L726.805,317.1738 L1013.39,317.1738 A2.5,2.5 0 0 1 1015.89,319.6738 L1015.89,424.9769 A2.5,2.5 0 0 1 1013.39,427.4769 L676.39,427.4769 A2.5,2.5 0 0 1 673.89,424.9769 L673.89,297.3769 A2.5,2.5 0 0 1 676.39,294.8769" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="673.89" x2="726.805" y1="317.1738" y2="317.1738"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="39.915" x="677.89" y="309.872">:core</text></g><g class="cluster" data-entity="domain_package" data-source-line="12" data-uid="ent0006" id="cluster_domain_package"><path d="M53.39,286.8769 L118.4291,286.8769 A3.75,3.75 0 0 1 120.9291,289.3769 L127.9291,309.1738 L265.39,309.1738 A2.5,2.5 0 0 1 267.89,311.6738 L267.89,614.5669 A2.5,2.5 0 0 1 265.39,617.0669 L53.39,617.0669 A2.5,2.5 0 0 1 50.89,614.5669 L50.89,289.3769 A2.5,2.5 0 0 1 53.39,286.8769" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="50.89" x2="127.9291" y1="309.1738" y2="309.1738"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="64.0391" x="54.89" y="301.872">:domain</text></g><g class="cluster" data-entity="data_package" data-source-line="19" data-uid="ent0010" id="cluster_data_package"><path d="M616.39,476.4769 L658.597,476.4769 A3.75,3.75 0 0 1 661.097,478.9769 L668.097,498.7738 L1013.39,498.7738 A2.5,2.5 0 0 1 1015.89,501.2738 L1015.89,743.5669 A2.5,2.5 0 0 1 1013.39,746.0669 L616.39,746.0669 A2.5,2.5 0 0 1 613.89,743.5669 L613.89,478.9769 A2.5,2.5 0 0 1 616.39,476.4769" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="613.89" x2="668.097" y1="498.7738" y2="498.7738"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="41.207" x="617.89" y="491.472">:data</text></g><g class="cluster" data-entity="feature_package" data-source-line="37" data-uid="ent0025" id="cluster_feature_package"><path d="M1050.39,263.0269 L1115.0804,263.0269 A3.75,3.75 0 0 1 1117.5804,265.5269 L1124.5804,285.3237 L1482.39,285.3237 A2.5,2.5 0 0 1 1484.89,287.8237 L1484.89,606.4169 A2.5,2.5 0 0 1 1482.39,608.9169 L1050.39,608.9169 A2.5,2.5 0 0 1 1047.89,606.4169 L1047.89,265.5269 A2.5,2.5 0 0 1 1050.39,263.0269" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="1047.89" x2="1124.5804" y1="285.3237" y2="285.3237"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="63.6904" x="1051.89" y="278.022">:feature</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="98.9775" x="1220.9012" y="300.3189">«android libs»</text></g><g class="entity" data-entity="core_common_module" data-source-line="8" data-uid="ent0004" id="entity_core_common_module"><rect fill="#313139" height="62.5938" rx="2.5" ry="2.5" style="stroke:#E7E7E7;stroke-width:0.5;" width="141.042" x="858.37" y="348.8769"/><rect fill="#313139" height="10" style="stroke:#E7E7E7;stroke-width:0.5;" width="15" x="979.412" y="353.8769"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="977.412" y="355.8769"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="977.412" y="359.8769"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="77.0615" x="885.3602" y="381.872">«kotlin lib»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.042" x="873.37" y="398.1689">:core:common</text></g><g class="entity" data-entity="core_ui_module" data-source-line="9" data-uid="ent0005" id="entity_core_ui_module"><rect fill="#313139" height="62.5938" rx="2.5" ry="2.5" style="stroke:#E7E7E7;stroke-width:0.5;" width="133.6836" x="690.05" y="348.8769"/><rect fill="#313139" height="10" style="stroke:#E7E7E7;stroke-width:0.5;" width="15" x="803.7336" y="353.8769"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="801.7336" y="355.8769"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="801.7336" y="359.8769"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="91.6836" x="706.05" y="381.872">«android lib»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="52.8281" x="725.4777" y="398.1689">:core:ui</text></g><g class="entity" data-entity="domain_shared_module" data-source-line="13" data-uid="ent0007" id="entity_domain_shared_module"><rect fill="#313139" height="62.5938" rx="2.5" ry="2.5" style="stroke:#E7E7E7;stroke-width:0.5;" width="149.8672" x="74.96" y="348.8769"/><rect fill="#313139" height="10" style="stroke:#E7E7E7;stroke-width:0.5;" width="15" x="204.8272" y="353.8769"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="202.8272" y="355.8769"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="202.8272" y="359.8769"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="77.0615" x="106.3628" y="381.872">«kotlin lib»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109.8672" x="89.96" y="398.1689">:domain:shared</text></g><g class="entity" data-entity="domain_core_module" data-source-line="14" data-uid="ent0008" id="entity_domain_core_module"><rect fill="#313139" height="62.5938" rx="2.5" ry="2.5" style="stroke:#E7E7E7;stroke-width:0.5;" width="132.4971" x="92.64" y="530.4769"/><rect fill="#313139" height="10" style="stroke:#E7E7E7;stroke-width:0.5;" width="15" x="205.1371" y="535.4769"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="203.1371" y="537.4769"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="203.1371" y="541.4769"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="77.0615" x="115.3578" y="563.472">«kotlin lib»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92.4971" x="107.64" y="579.7689">:domain:core</text></g><g class="entity" data-entity="data_module" data-source-line="20" data-uid="ent0011" id="entity_data_module"><rect fill="#313139" height="62.5938" rx="2.5" ry="2.5" style="stroke:#E7E7E7;stroke-width:0.5;" width="133.6836" x="791.05" y="530.4769"/><rect fill="#313139" height="10" style="stroke:#E7E7E7;stroke-width:0.5;" width="15" x="904.7336" y="535.4769"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="902.7336" y="537.4769"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="902.7336" y="541.4769"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="91.6836" x="807.05" y="563.472">«android lib»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36.251" x="834.7663" y="579.7689">:data</text></g><g class="entity" data-entity="api_1" data-source-line="21" data-uid="ent0012" id="entity_api_1"><ellipse cx="679.89" cy="701.0669" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="84.7588" x="637.5106" y="731.062">Some_API_1</text></g><g class="entity" data-entity="api_2" data-source-line="22" data-uid="ent0013" id="entity_api_2"><ellipse cx="814.89" cy="701.0669" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="84.7588" x="772.5106" y="731.062">Some_API_2</text></g><g class="entity" data-entity="api_3" data-source-line="23" data-uid="ent0014" id="entity_api_3"><ellipse cx="949.89" cy="701.0669" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="84.7588" x="907.5106" y="731.062">Some_API_3</text></g><g class="entity" data-entity="feature_1" data-source-line="38" data-uid="ent0026" id="entity_feature_1"><rect fill="#313139" height="46.2969" rx="2.5" ry="2.5" style="stroke:#E7E7E7;stroke-width:0.5;" width="167.0459" x="1072.37" y="357.0269"/><rect fill="#313139" height="10" style="stroke:#E7E7E7;stroke-width:0.5;" width="15" x="1219.4159" y="362.0269"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="1217.4159" y="364.0269"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="1217.4159" y="368.0269"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="127.0459" x="1087.37" y="390.022">:feature:feature_1</text></g><g class="entity" data-entity="feature_2" data-source-line="39" data-uid="ent0027" id="entity_feature_2"><rect fill="#313139" height="46.2969" rx="2.5" ry="2.5" style="stroke:#E7E7E7;stroke-width:0.5;" width="167.0459" x="1274.37" y="357.0269"/><rect fill="#313139" height="10" style="stroke:#E7E7E7;stroke-width:0.5;" width="15" x="1421.4159" y="362.0269"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="1419.4159" y="364.0269"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="1419.4159" y="368.0269"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="127.0459" x="1289.37" y="390.022">:feature:feature_2</text></g><g class="entity" data-entity="feature_3" data-source-line="40" data-uid="ent0028" id="entity_feature_3"><rect fill="#313139" height="46.2969" rx="2.5" ry="2.5" style="stroke:#E7E7E7;stroke-width:0.5;" width="167.0459" x="1072.37" y="538.6169"/><rect fill="#313139" height="10" style="stroke:#E7E7E7;stroke-width:0.5;" width="15" x="1219.4159" y="543.6169"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="1217.4159" y="545.6169"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="1217.4159" y="549.6169"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="127.0459" x="1087.37" y="571.612">:feature:feature_3</text></g><g class="entity" data-entity="feature_4" data-source-line="41" data-uid="ent0029" id="entity_feature_4"><rect fill="#313139" height="46.2969" rx="2.5" ry="2.5" style="stroke:#E7E7E7;stroke-width:0.5;" width="167.0459" x="1274.37" y="538.6169"/><rect fill="#313139" height="10" style="stroke:#E7E7E7;stroke-width:0.5;" width="15" x="1421.4159" y="543.6169"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="1419.4159" y="545.6169"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="1419.4159" y="549.6169"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="127.0459" x="1289.37" y="571.612">:feature:feature_4</text></g><g class="entity" data-entity="app_module" data-source-line="5" data-uid="ent0002" id="entity_app_module"><rect fill="#313139" height="62.5938" rx="2.5" ry="2.5" style="stroke:#E7E7E7;stroke-width:0.5;" width="143.3701" x="1405.2" y="129.4369"/><rect fill="#313139" height="10" style="stroke:#E7E7E7;stroke-width:0.5;" width="15" x="1528.5701" y="134.4369"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="1526.5701" y="136.4369"/><rect fill="#313139" height="2" style="stroke:#E7E7E7;stroke-width:0.5;" width="4" x="1526.5701" y="140.4369"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="101.3701" x="1421.2" y="162.432">«android app»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="31.0693" x="1456.3504" y="178.7289">:app</text></g><g class="entity" data-entity="GMN15" data-source-line="27" data-uid="ent0016" id="entity_GMN15"><path d="M1034.47,688.4969 L1034.47,713.6297 A0,0 0 0 0 1034.47,713.6297 L1239.3172,713.6297 A0,0 0 0 0 1239.3172,713.6297 L1239.3172,698.4969 L1229.3172,688.4969 L1116.6,688.4969 L920.16,593.4069 L1108.6,688.4969 L1034.47,688.4969 A0,0 0 0 0 1034.47,688.4969" fill="#714137" style="stroke:#E7E7E7;stroke-width:0.5;"/><path d="M1229.3172,688.4969 L1229.3172,698.4969 L1239.3172,698.4969 L1229.3172,688.4969" fill="#714137" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="183.8472" x="1040.47" y="705.5638">repositories implementation</text></g><g class="entity" data-entity="GMN35" data-source-line="52" data-uid="ent0036" id="entity_GMN35"><path d="M1339.89,43.2969 L1339.89,68.4297 A0,0 0 0 0 1339.89,68.4297 L1472.89,68.4297 L1476.89,129.2469 L1480.89,68.4297 L1613.8822,68.4297 A0,0 0 0 0 1613.8822,68.4297 L1613.8822,53.2969 L1603.8822,43.2969 L1339.89,43.2969 A0,0 0 0 0 1339.89,43.2969" fill="#714137" style="stroke:#E7E7E7;stroke-width:0.5;"/><path d="M1603.8822,43.2969 L1603.8822,53.2969 L1613.8822,53.2969 L1603.8822,43.2969" fill="#714137" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="252.9922" x="1345.89" y="60.3638">Enter point to application + navigation</text></g><g class="entity" data-entity="GMN38" data-source-line="56" data-uid="ent0039" id="entity_GMN38"><path d="M291.46,541.6369 L291.46,581.9025 A0,0 0 0 0 291.46,581.9025 L598.3204,581.9025 A0,0 0 0 0 598.3204,581.9025 L598.3204,551.6369 L588.3204,541.6369 L482.69,541.6369 L703.61,411.8469 L474.69,541.6369 L291.46,541.6369 A0,0 0 0 0 291.46,541.6369" fill="#714137" style="stroke:#E7E7E7;stroke-width:0.5;"/><path d="M588.3204,541.6369 L588.3204,551.6369 L598.3204,551.6369 L588.3204,541.6369" fill="#714137" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="221.6094" x="297.46" y="558.7038">app theme, common UI elements,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="285.8604" x="297.46" y="573.8366">UI classes (AbstractViewModel for example)</text></g><g class="entity" data-entity="GMN41" data-source-line="61" data-uid="ent0042" id="entity_GMN41"><path d="M6,148.1669 L6,173.2997 A0,0 0 0 0 6,173.2997 L145.89,173.2997 L149.89,348.5269 L153.89,173.2997 L293.7793,173.2997 A0,0 0 0 0 293.7793,173.2997 L293.7793,158.1669 L283.7793,148.1669 L6,148.1669 A0,0 0 0 0 6,148.1669" fill="#714137" style="stroke:#E7E7E7;stroke-width:0.5;"/><path d="M283.7793,148.1669 L283.7793,158.1669 L293.7793,158.1669 L283.7793,148.1669" fill="#714137" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="266.7793" x="12" y="165.2338">get interfases and their implementations</text></g><g class="entity" data-entity="GMN44" data-source-line="65" data-uid="ent0045" id="entity_GMN44"><path d="M295.12,360.0469 L295.12,400.3125 A0,0 0 0 0 295.12,400.3125 L345.58,400.3125 L195.36,530.1669 L353.58,400.3125 L450.6522,400.3125 A0,0 0 0 0 450.6522,400.3125 L450.6522,370.0469 L440.6522,360.0469 L295.12,360.0469 A0,0 0 0 0 295.12,360.0469" fill="#714137" style="stroke:#E7E7E7;stroke-width:0.5;"/><path d="M440.6522,360.0469 L440.6522,370.0469 L450.6522,370.0469 L440.6522,360.0469" fill="#714137" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="51.3843" x="301.12" y="377.1138">models,</text><text fill="#FFFFFF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="134.5322" x="301.12" y="392.2466">repository interfases</text></g><g class="link" data-entity-1="domain_shared_module" data-entity-2="domain_core_module" data-source-line="17" data-uid="lnk9" id="link_domain_shared_module_domain_core_module"><path d="M151.42,411.6369 C153.07,444.6669 155.3994,491.0744 157.0594,524.1644" fill="none" id="domain_shared_module-to-domain_core_module" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="157.36,530.1569,160.904,520.9678,157.1095,525.1632,152.9141,521.3686,157.36,530.1569" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="core_common_module" data-entity-2="data_module" data-source-line="30" data-uid="lnk19" id="link_core_common_module_data_module"><path d="M914.6438,417.2165 C901.5838,450.2465 883.07,497.0669 869.99,530.1569" fill="none" id="core_common_module-backto-data_module" style="stroke:#E7E7E7;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#E7E7E7" points="916.85,411.6369,909.8209,418.5356,915.0115,416.2866,917.2605,421.4772,916.85,411.6369" style="stroke:#E7E7E7;stroke-width:1;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="49.6133" x="904.89" y="456.5438">possble</text></g><g class="link" data-entity-1="domain_core_module" data-entity-2="data_module" data-source-line="31" data-uid="lnk21" id="link_domain_core_module_data_module"><path d="M189.3849,525.5944 C213.7649,499.0044 248.53,467.4269 291.39,451.9769 C355.57,428.8369 531.53,438.4069 598.39,451.9769 C671.74,466.8569 750.11,503.1669 801.29,529.9769" fill="none" id="domain_core_module-backto-data_module" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="185.33,530.0169,194.3606,526.0865,188.7091,526.3315,188.464,520.68,185.33,530.0169" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="data_module" data-entity-2="api_1" data-source-line="33" data-uid="lnk22" id="link_data_module_api_1"><path d="M818.39,593.2369 C776.19,625.7869 712.22,675.1269 688.85,693.1569" fill="none" id="data_module-api_1" style="stroke:#E7E7E7;stroke-width:1;stroke-dasharray:7,7;"/></g><g class="link" data-entity-1="data_module" data-entity-2="api_2" data-source-line="34" data-uid="lnk23" id="link_data_module_api_2"><path d="M848.35,593.2369 C838.35,625.1569 823.3,673.2169 817.39,692.0769" fill="none" id="data_module-api_2" style="stroke:#E7E7E7;stroke-width:1;stroke-dasharray:7,7;"/></g><g class="link" data-entity-1="data_module" data-entity-2="api_3" data-source-line="35" data-uid="lnk24" id="link_data_module_api_3"><path d="M878.31,593.2369 C899.69,625.1569 931.9,673.2169 944.53,692.0769" fill="none" id="data_module-api_3" style="stroke:#E7E7E7;stroke-width:1;stroke-dasharray:7,7;"/></g><g class="link" data-entity-1="feature_package" data-entity-2="core_ui_module" data-source-line="44" data-uid="lnk30" id="link_feature_package_core_ui_module"><path d="M1474.2411,284.6867 C1474.0593,284.1834 1473.6038,260.6287 1473.4152,260.1292 C1473.038,259.1302 1472.6471,258.1392 1472.2422,257.1567 C1465.7631,241.4375 1455.685,227.9219 1440.39,219.5269 C1383.7,188.4069 915.08,188.4069 858.39,219.5269 C808.65,246.8369 781.9145,304.3046 768.4245,342.7946" fill="none" id="feature_package-to-core_ui_module" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="766.44,348.4569,773.1917,341.2864,768.0938,343.7383,765.6419,338.6404,766.44,348.4569" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="domain_package" data-entity-2="feature_package" data-source-line="45" data-uid="lnk32" id="link_domain_package_feature_package"><path d="M256.7404,303.226 C258.3288,294.6289 260.5251,264.9985 263.7192,257.1398 C270.1075,241.4225 280.1175,227.9119 295.39,219.5269 C351.15,188.9169 1384.63,188.9169 1440.39,219.5269 C1455.685,227.9219 1465.7631,241.4375 1472.2422,257.1567 C1472.6471,258.1392 1473.038,259.1302 1473.4152,260.1292 C1473.6038,260.6287 1473.789,261.1301 1473.9709,261.6334 C1474.0618,261.8851 1474.1518,284.4341 1474.2411,284.6867" fill="none" id="domain_package-backto-feature_package" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="255.827,309.1561,261.1505,300.8699,256.5882,304.2144,253.2437,299.6521,255.827,309.1561" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="feature_package" data-entity-2="core_common_module" data-source-line="46" data-uid="lnk33" id="link_feature_package_core_common_module"><path d="M1460.9783,285.0904 C1460.6927,284.8126 1459.9781,261.822 1459.6857,261.5495 C1459.101,261.0045 1458.5025,260.4702 1457.89,259.9469 C1389.97,201.9169 1138.88,226.8869 1055.89,259.9469 C1011.32,277.6969 977.0477,314.5807 954.5377,343.8507" fill="none" id="feature_package-to-core_common_module" style="stroke:#E7E7E7;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#E7E7E7" points="950.88,348.6069,959.5374,343.9111,953.9281,344.6434,953.1958,339.0341,950.88,348.6069" style="stroke:#E7E7E7;stroke-width:1;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="49.6133" x="1202.39" y="235.0938">possble</text></g><g class="link" data-entity-1="app_module" data-entity-2="feature_package" data-source-line="49" data-uid="lnk34" id="link_app_module_feature_package"><path d="M1476.89,192.4269 C1476.89,207.1769 1476.89,225.9769 1476.89,245.9403 C1476.89,250.9312 1476.89,255.9947 1476.89,261.0859 C1476.89,261.7223 1476.89,278.656 1476.89,279.2932" fill="none" id="app_module-to-feature_package" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="1476.89,285.2932,1480.89,276.2932,1476.89,280.2932,1472.89,276.2932,1476.89,285.2932" style="stroke:#E7E7E7;stroke-width:1;"/></g></g></svg></div></div>
+
+<h4 id="domain-core-module">Domain Core module</h4>
+<ul>
+<li>Has data classes and interfaces of repositories. </li>
+<li>It's an independent module. </li>
+<li>Often it's only Kotlin library, but not always.</li>
+</ul>
+<p>I think I have to move attention to library type. The common way is making <strong>domain</strong> module as Kotlin library. And it's correct way, the best solution... ideal... 
+But sometimes we have to move away from this pattern. And the main problem is in the resources and annotations:</p>
+<ul>
+<li>Annotations <code>@StringRes</code>, <code>@DrawableRes</code> etc. is needs in <code>androidx.annotation:annotation</code> library.</li>
+<li>Also we wanna add some resources as params, such as
+<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">enum</span><span class="w"> </span><span class="n">CustomErrors</span><span class="p">(</span><span class="kd">val</span><span class="w"> </span><span class="nv">messageResId</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="n">ERROR_1</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">err_1_msg</span><span class="p">),</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">ERROR_2</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="na">string</span><span class="p">.</span><span class="na">err_2_msg</span><span class="p">),</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="c1">//etc</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">}</span>
+</span></code></pre></div></li>
+</ul>
+<p>So, what can I say? - Do it. Make module as Android library. It's wrong and it's not a canonical way... but it's much more simple for maintain in future.</p>
+<h4 id="domain-shared-module">Domain Shared module</h4>
+<p>Here are the single-line UseCases and their implementations. The module depends on only <strong>:domain:core</strong>.</p>
+<div class='puml-container'><div class="puml light" style=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" height="419px" preserveAspectRatio="xMidYMid meet" style="width:1205px;height:419px;background:#FFFFFF;" version="1.1" viewBox="0 0 1205 419" width="1205px" zoomAndPan="magnify" class="diagram"><title>Domain Shared module</title><defs/><g><g class="title" data-source-line="3"><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="184.1943" x="503.5271" y="22.9951">Domain Shared module</text></g><g class="cluster" data-entity="domain_shared_module" data-source-line="4" data-uid="ent0002" id="cluster_domain_shared_module"><rect fill="none" height="224" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1;" width="1153" x="7" y="104.2969"/><rect fill="none" height="10" style="stroke:#181818;stroke-width:1;" width="15" x="1140" y="109.2969"/><rect fill="none" height="2" style="stroke:#181818;stroke-width:1;" width="4" x="1138" y="111.2969"/><rect fill="none" height="2" style="stroke:#181818;stroke-width:1;" width="4" x="1138" y="115.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="118.207" x="524.3965" y="130.292">domain:shared</text></g><g class="cluster" data-entity="api" data-source-line="5" data-uid="ent0003" id="cluster_api"><path d="M49.5,163.2969 L74.7676,163.2969 A3.75,3.75 0 0 1 77.2676,165.7969 L84.2676,185.5938 L462.5,185.5938 A2.5,2.5 0 0 1 465,188.0938 L465,285.7969 A2.5,2.5 0 0 1 462.5,288.2969 L49.5,288.2969 A2.5,2.5 0 0 1 47,285.7969 L47,165.7969 A2.5,2.5 0 0 1 49.5,163.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="47" x2="84.2676" y1="185.5938" y2="185.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="24.2676" x="51" y="178.292">api</text></g><g class="cluster" data-entity="impl" data-source-line="9" data-uid="ent0006" id="cluster_impl"><path d="M499.5,171.2969 L534.707,171.2969 A3.75,3.75 0 0 1 537.207,173.7969 L544.207,193.5938 L941.5,193.5938 A2.5,2.5 0 0 1 944,196.0938 L944,277.7969 A2.5,2.5 0 0 1 941.5,280.2969 L499.5,280.2969 A2.5,2.5 0 0 1 497,277.7969 L497,173.7969 A2.5,2.5 0 0 1 499.5,171.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="497" x2="544.207" y1="193.5938" y2="193.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="34.207" x="501" y="186.292">impl</text></g><g class="cluster" data-entity="di" data-source-line="13" data-uid="ent0009" id="cluster_di"><path d="M970.5,171.2969 L986.3203,171.2969 A3.75,3.75 0 0 1 988.8203,173.7969 L995.8203,193.5938 L1117.5,193.5938 A2.5,2.5 0 0 1 1120,196.0938 L1120,277.7969 A2.5,2.5 0 0 1 1117.5,280.2969 L970.5,280.2969 A2.5,2.5 0 0 1 968,277.7969 L968,173.7969 A2.5,2.5 0 0 1 970.5,171.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="968" x2="995.8203" y1="193.5938" y2="193.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="14.8203" x="972" y="186.292">di</text></g><g class="entity" data-entity="SharedGetUseCase1" data-source-line="6" data-uid="ent0004" id="entity_SharedGetUseCase1"><ellipse cx="150" cy="235.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="143.8691" x="78.0654" y="265.292">SharedGetUseCase1</text></g><g class="entity" data-entity="SharedGetUseCase2" data-source-line="7" data-uid="ent0005" id="entity_SharedGetUseCase2"><ellipse cx="343" cy="235.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="143.8691" x="271.0654" y="265.292">SharedGetUseCase2</text></g><g class="entity" data-entity="SharedGetUseCase1Impl" data-source-line="10" data-uid="ent0007" id="entity_SharedGetUseCase1Impl"><ellipse cx="608" cy="235.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="174.4121" x="520.7939" y="265.292">SharedGetUseCase1Impl</text></g><g class="entity" data-entity="SharedGetUseCase2Impl" data-source-line="11" data-uid="ent0008" id="entity_SharedGetUseCase2Impl"><ellipse cx="833" cy="235.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="174.4121" x="745.7939" y="265.292">SharedGetUseCase2Impl</text></g><g class="entity" data-entity="BindModule" data-source-line="14" data-uid="ent0010" id="entity_BindModule"><ellipse cx="1044" cy="235.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82.1611" x="1002.9194" y="265.292">BindModule</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="102.7578" x="992.6211" y="214.9951">«Module(Hilt)»</text></g><g class="entity" data-entity="domain_core_module" data-source-line="18" data-uid="ent0011" id="entity_domain_core_module"><ellipse cx="1152" cy="381.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92.4971" x="1105.7515" y="411.292">:domain:core</text></g><g class="entity" data-entity="feature" data-source-line="20" data-uid="ent0012" id="entity_feature"><ellipse cx="457" cy="51.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="50.8525" x="431.5737" y="81.292">feature</text></g><g class="link" data-entity-1="feature" data-entity-2="api" data-source-line="20" data-uid="lnk13" id="link_feature_api"><path d="M457,60.1169 C457,77.2619 457,119.7244 457,158.4294 C457,159.6389 457,160.8448 457,162.0461 C457,162.3464 457,178.9433 457,179.2431" fill="none" id="feature-to-api" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="457,185.2431,461,176.2431,457,180.2431,453,176.2431,457,185.2431" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="domain_shared_module" data-entity-2="domain_core_module" data-source-line="21" data-uid="lnk15" id="link_domain_shared_module_domain_core_module"><path d="M1152,328.4813 C1152,332.1355 1152,335.7142 1152,339.1755 C1152,353.0206 1152,358.9869 1152,366.3869" fill="none" id="domain_shared_module-to-domain_core_module" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="1152,372.3869,1156,363.3869,1152,367.3869,1148,363.3869,1152,372.3869" style="stroke:#181818;stroke-width:1;"/></g></g></svg></div><div class="puml dark" style=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" height="419px" preserveAspectRatio="xMidYMid meet" style="width:1205px;height:419px;background:#1B1B1B;" version="1.1" viewBox="0 0 1205 419" width="1205px" zoomAndPan="magnify" class="diagram"><title>Domain Shared module</title><defs/><g><rect fill="#1B1B1B" height="419" style="stroke:none;stroke-width:1;" width="1205" x="0" y="0"/><g class="title" data-source-line="3"><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="184.1943" x="503.5271" y="22.9951">Domain Shared module</text></g><g class="cluster" data-entity="domain_shared_module" data-source-line="4" data-uid="ent0002" id="cluster_domain_shared_module"><rect fill="none" height="224" rx="2.5" ry="2.5" style="stroke:#E7E7E7;stroke-width:1;" width="1153" x="7" y="104.2969"/><rect fill="none" height="10" style="stroke:#E7E7E7;stroke-width:1;" width="15" x="1140" y="109.2969"/><rect fill="none" height="2" style="stroke:#E7E7E7;stroke-width:1;" width="4" x="1138" y="111.2969"/><rect fill="none" height="2" style="stroke:#E7E7E7;stroke-width:1;" width="4" x="1138" y="115.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="118.207" x="524.3965" y="130.292">domain:shared</text></g><g class="cluster" data-entity="api" data-source-line="5" data-uid="ent0003" id="cluster_api"><path d="M49.5,163.2969 L74.7676,163.2969 A3.75,3.75 0 0 1 77.2676,165.7969 L84.2676,185.5938 L462.5,185.5938 A2.5,2.5 0 0 1 465,188.0938 L465,285.7969 A2.5,2.5 0 0 1 462.5,288.2969 L49.5,288.2969 A2.5,2.5 0 0 1 47,285.7969 L47,165.7969 A2.5,2.5 0 0 1 49.5,163.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="47" x2="84.2676" y1="185.5938" y2="185.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="24.2676" x="51" y="178.292">api</text></g><g class="cluster" data-entity="impl" data-source-line="9" data-uid="ent0006" id="cluster_impl"><path d="M499.5,171.2969 L534.707,171.2969 A3.75,3.75 0 0 1 537.207,173.7969 L544.207,193.5938 L941.5,193.5938 A2.5,2.5 0 0 1 944,196.0938 L944,277.7969 A2.5,2.5 0 0 1 941.5,280.2969 L499.5,280.2969 A2.5,2.5 0 0 1 497,277.7969 L497,173.7969 A2.5,2.5 0 0 1 499.5,171.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="497" x2="544.207" y1="193.5938" y2="193.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="34.207" x="501" y="186.292">impl</text></g><g class="cluster" data-entity="di" data-source-line="13" data-uid="ent0009" id="cluster_di"><path d="M970.5,171.2969 L986.3203,171.2969 A3.75,3.75 0 0 1 988.8203,173.7969 L995.8203,193.5938 L1117.5,193.5938 A2.5,2.5 0 0 1 1120,196.0938 L1120,277.7969 A2.5,2.5 0 0 1 1117.5,280.2969 L970.5,280.2969 A2.5,2.5 0 0 1 968,277.7969 L968,173.7969 A2.5,2.5 0 0 1 970.5,171.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="968" x2="995.8203" y1="193.5938" y2="193.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="14.8203" x="972" y="186.292">di</text></g><g class="entity" data-entity="SharedGetUseCase1" data-source-line="6" data-uid="ent0004" id="entity_SharedGetUseCase1"><ellipse cx="150" cy="235.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="143.8691" x="78.0654" y="265.292">SharedGetUseCase1</text></g><g class="entity" data-entity="SharedGetUseCase2" data-source-line="7" data-uid="ent0005" id="entity_SharedGetUseCase2"><ellipse cx="343" cy="235.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="143.8691" x="271.0654" y="265.292">SharedGetUseCase2</text></g><g class="entity" data-entity="SharedGetUseCase1Impl" data-source-line="10" data-uid="ent0007" id="entity_SharedGetUseCase1Impl"><ellipse cx="608" cy="235.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="174.4121" x="520.7939" y="265.292">SharedGetUseCase1Impl</text></g><g class="entity" data-entity="SharedGetUseCase2Impl" data-source-line="11" data-uid="ent0008" id="entity_SharedGetUseCase2Impl"><ellipse cx="833" cy="235.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="174.4121" x="745.7939" y="265.292">SharedGetUseCase2Impl</text></g><g class="entity" data-entity="BindModule" data-source-line="14" data-uid="ent0010" id="entity_BindModule"><ellipse cx="1044" cy="235.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82.1611" x="1002.9194" y="265.292">BindModule</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="102.7578" x="992.6211" y="214.9951">«Module(Hilt)»</text></g><g class="entity" data-entity="domain_core_module" data-source-line="18" data-uid="ent0011" id="entity_domain_core_module"><ellipse cx="1152" cy="381.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92.4971" x="1105.7515" y="411.292">:domain:core</text></g><g class="entity" data-entity="feature" data-source-line="20" data-uid="ent0012" id="entity_feature"><ellipse cx="457" cy="51.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="50.8525" x="431.5737" y="81.292">feature</text></g><g class="link" data-entity-1="feature" data-entity-2="api" data-source-line="20" data-uid="lnk13" id="link_feature_api"><path d="M457,60.1169 C457,77.2619 457,119.7244 457,158.4294 C457,159.6389 457,160.8448 457,162.0461 C457,162.3464 457,178.9433 457,179.2431" fill="none" id="feature-to-api" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="457,185.2431,461,176.2431,457,180.2431,453,176.2431,457,185.2431" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="domain_shared_module" data-entity-2="domain_core_module" data-source-line="21" data-uid="lnk15" id="link_domain_shared_module_domain_core_module"><path d="M1152,328.4813 C1152,332.1355 1152,335.7142 1152,339.1755 C1152,353.0206 1152,358.9869 1152,366.3869" fill="none" id="domain_shared_module-to-domain_core_module" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="1152,372.3869,1156,363.3869,1152,367.3869,1148,363.3869,1152,372.3869" style="stroke:#E7E7E7;stroke-width:1;"/></g></g></svg></div></div>
+
+<h4 id="feature-module">Feature module</h4>
+<p>Depends on:</p>
+<ul>
+<li>:core:ui - common UI components</li>
+<li>:domain:core - models and repositories</li>
+<li>:domain:shared - common UseCases</li>
+</ul>
+<p>Here you are packages:</p>
+<ul>
+<li><strong>navigation</strong> - Here are navigation routes, part of navigation graph. The only module that has <code>public</code> modifier.
+<em>Other have <code>internal</code>.</em></li>
+<li><strong>presentation</strong> - Composable functions, ViewModels, UiStates... as usual... One point - in ViewModel we also have to inject shared UseCases from <strong>:domain:shared</strong> we need in.</li>
+<li><strong>domain</strong> - Feature UseCases</li>
+<li><strong>data</strong> - Implementations of feature UseCases</li>
+</ul>
+<div class='puml-container'><div class="puml light" style=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" height="1029px" preserveAspectRatio="xMidYMid meet" style="width:1525px;height:1029px;background:#FFFFFF;" version="1.1" viewBox="0 0 1525 1029" width="1525px" zoomAndPan="magnify" class="diagram"><title>Feature module</title><defs/><g><g class="title" data-source-line="3"><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="124.9268" x="693.2437" y="22.9951">Feature module</text></g><g class="cluster" data-entity="feature_1" data-source-line="4" data-uid="ent0002" id="cluster_feature_1"><rect fill="none" height="927" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1;" width="1276" x="7" y="96.2969"/><rect fill="none" height="10" style="stroke:#181818;stroke-width:1;" width="15" x="1263" y="101.2969"/><rect fill="none" height="2" style="stroke:#181818;stroke-width:1;" width="4" x="1261" y="103.2969"/><rect fill="none" height="2" style="stroke:#181818;stroke-width:1;" width="4" x="1261" y="107.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="138.5234" x="575.7383" y="122.292">feature:feature_1</text></g><g class="cluster" data-entity="presentation" data-source-line="5" data-uid="ent0003" id="cluster_presentation"><path d="M680.5,312.2969 L782.9316,312.2969 A3.75,3.75 0 0 1 785.4316,314.7969 L792.4316,334.5938 L1225.5,334.5938 A2.5,2.5 0 0 1 1228,337.0938 L1228,501.7969 A2.5,2.5 0 0 1 1225.5,504.2969 L680.5,504.2969 A2.5,2.5 0 0 1 678,501.7969 L678,314.7969 A2.5,2.5 0 0 1 680.5,312.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="678" x2="792.4316" y1="334.5938" y2="334.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="101.4316" x="682" y="327.292">presentation</text></g><g class="cluster" data-entity="screen_1" data-source-line="6" data-uid="ent0004" id="cluster_screen_1"><path d="M712.5,363.2969 L782.7344,363.2969 A3.75,3.75 0 0 1 785.2344,365.7969 L792.2344,385.5938 L1185.5,385.5938 A2.5,2.5 0 0 1 1188,388.0938 L1188,469.7969 A2.5,2.5 0 0 1 1185.5,472.2969 L712.5,472.2969 A2.5,2.5 0 0 1 710,469.7969 L710,365.7969 A2.5,2.5 0 0 1 712.5,363.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="710" x2="792.2344" y1="385.5938" y2="385.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="69.2344" x="714" y="378.292">screen_1</text></g><g class="cluster" data-entity="navigation" data-source-line="12" data-uid="ent0008" id="cluster_navigation"><path d="M717.5,147.2969 L802.3838,147.2969 A3.75,3.75 0 0 1 804.8838,149.7969 L811.8838,169.5938 L1072.5,169.5938 A2.5,2.5 0 0 1 1075,172.0938 L1075,269.7969 A2.5,2.5 0 0 1 1072.5,272.2969 L717.5,272.2969 A2.5,2.5 0 0 1 715,269.7969 L715,149.7969 A2.5,2.5 0 0 1 717.5,147.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="715" x2="811.8838" y1="169.5938" y2="169.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="83.8838" x="719" y="162.292">navigation</text></g><g class="cluster" data-entity="domain" data-source-line="16" data-uid="ent0011" id="cluster_domain"><path d="M41.5,544.2969 L100.9404,544.2969 A3.75,3.75 0 0 1 103.4404,546.7969 L110.4404,566.5938 L782.5,566.5938 A2.5,2.5 0 0 1 785,569.0938 L785,882.7969 A2.5,2.5 0 0 1 782.5,885.2969 L41.5,885.2969 A2.5,2.5 0 0 1 39,882.7969 L39,546.7969 A2.5,2.5 0 0 1 41.5,544.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="39" x2="110.4404" y1="566.5938" y2="566.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="58.4404" x="43" y="559.292">domain</text></g><g class="cluster" data-entity="usecases" data-source-line="17" data-uid="ent0012" id="cluster_usecases"><path d="M73.5,595.2969 L146.2021,595.2969 A3.75,3.75 0 0 1 148.7021,597.7969 L155.7021,617.5938 L399.5,617.5938 A2.5,2.5 0 0 1 402,620.0938 L402,850.7969 A2.5,2.5 0 0 1 399.5,853.2969 L73.5,853.2969 A2.5,2.5 0 0 1 71,850.7969 L71,597.7969 A2.5,2.5 0 0 1 73.5,595.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="71" x2="155.7021" y1="617.5938" y2="617.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="71.7021" x="75" y="610.292">usecases</text></g><g class="cluster" data-entity="models" data-source-line="22" data-uid="ent0016" id="cluster_models"><path d="M428.5,595.2969 L486.3545,595.2969 A3.75,3.75 0 0 1 488.8545,597.7969 L495.8545,617.5938 L742.5,617.5938 A2.5,2.5 0 0 1 745,620.0938 L745,701.7969 A2.5,2.5 0 0 1 742.5,704.2969 L428.5,704.2969 A2.5,2.5 0 0 1 426,701.7969 L426,597.7969 A2.5,2.5 0 0 1 428.5,595.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="426" x2="495.8545" y1="617.5938" y2="617.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="56.8545" x="430" y="610.292">models</text></g><g class="cluster" data-entity="data" data-source-line="27" data-uid="ent0019" id="cluster_data"><path d="M827.5,736.2969 L864.1084,736.2969 A3.75,3.75 0 0 1 866.6084,738.7969 L873.6084,758.5938 L1248.5,758.5938 A2.5,2.5 0 0 1 1251,761.0938 L1251,988.7969 A2.5,2.5 0 0 1 1248.5,991.2969 L827.5,991.2969 A2.5,2.5 0 0 1 825,988.7969 L825,738.7969 A2.5,2.5 0 0 1 827.5,736.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="825" x2="873.6084" y1="758.5938" y2="758.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="35.6084" x="829" y="751.292">data</text></g><g class="cluster" data-entity="di" data-source-line="32" data-uid="ent0023" id="cluster_di"><path d="M1109.5,155.2969 L1125.3203,155.2969 A3.75,3.75 0 0 1 1127.8203,157.7969 L1134.8203,177.5938 L1256.5,177.5938 A2.5,2.5 0 0 1 1259,180.0938 L1259,261.7969 A2.5,2.5 0 0 1 1256.5,264.2969 L1109.5,264.2969 A2.5,2.5 0 0 1 1107,261.7969 L1107,157.7969 A2.5,2.5 0 0 1 1109.5,155.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="1107" x2="1134.8203" y1="177.5938" y2="177.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="14.8203" x="1111" y="170.292">di</text></g><g class="entity" data-entity="SomeScreen_1" data-source-line="7" data-uid="ent0005" id="entity_SomeScreen_1"><ellipse cx="967" cy="427.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104.0498" x="914.9751" y="457.292">SomeScreen_1</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="101.7461" x="916.127" y="406.9951">«composable»</text></g><g class="entity" data-entity="SomeViewModel_1" data-source-line="8" data-uid="ent0006" id="entity_SomeViewModel_1"><ellipse cx="799" cy="427.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="131.1748" x="733.4126" y="457.292">SomeViewModel_1</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="116.4912" x="740.7544" y="406.9951">«HiltViewModel»</text></g><g class="entity" data-entity="UiState" data-source-line="9" data-uid="ent0007" id="entity_UiState"><ellipse cx="1117" cy="427.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="51.1943" x="1091.4028" y="457.292">UiState</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="92.627" x="1070.6865" y="406.9951">«immutable»</text></g><g class="entity" data-entity="FeatureRoutes" data-source-line="13" data-uid="ent0009" id="entity_FeatureRoutes"><ellipse cx="798" cy="219.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="102.5391" x="746.7305" y="249.292">FeatureRoutes</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="87.7461" x="754.127" y="198.9951">«srializable»</text></g><g class="entity" data-entity="FeatureNavGraph" data-source-line="14" data-uid="ent0010" id="entity_FeatureNavGraph"><ellipse cx="962" cy="219.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="124.2568" x="899.8716" y="249.292">FeatureNavGraph</text></g><g class="entity" data-entity="SomeUseCase_1" data-source-line="18" data-uid="ent0013" id="entity_SomeUseCase_1"><ellipse cx="153" cy="659.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116.0264" x="94.9868" y="689.292">SomeUseCase_1</text></g><g class="entity" data-entity="SomeUseCase_2" data-source-line="19" data-uid="ent0014" id="entity_SomeUseCase_2"><ellipse cx="320" cy="659.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116.0264" x="261.9868" y="689.292">SomeUseCase_2</text></g><g class="entity" data-entity="SomeUseCase_3" data-source-line="20" data-uid="ent0015" id="entity_SomeUseCase_3"><ellipse cx="153" cy="808.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116.0264" x="94.9868" y="838.292">SomeUseCase_3</text></g><g class="entity" data-entity="FeatureModel_1" data-source-line="23" data-uid="ent0017" id="entity_FeatureModel_1"><ellipse cx="505" cy="659.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111.918" x="449.041" y="689.292">FeatureModel_1</text></g><g class="entity" data-entity="FeatureModel_2" data-source-line="24" data-uid="ent0018" id="entity_FeatureModel_2"><ellipse cx="666" cy="659.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111.918" x="610.041" y="689.292">FeatureModel_2</text></g><g class="entity" data-entity="SomeUseCaseImpl_1" data-source-line="28" data-uid="ent0020" id="entity_SomeUseCaseImpl_1"><ellipse cx="930" cy="808.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146.5693" x="856.7153" y="838.292">SomeUseCaseImpl_1</text></g><g class="entity" data-entity="SomeUseCaseImpl_2" data-source-line="29" data-uid="ent0021" id="entity_SomeUseCaseImpl_2"><ellipse cx="1127" cy="808.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146.5693" x="1053.7153" y="838.292">SomeUseCaseImpl_2</text></g><g class="entity" data-entity="SomeUseCaseImpl_3" data-source-line="30" data-uid="ent0022" id="entity_SomeUseCaseImpl_3"><ellipse cx="930" cy="938.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146.5693" x="856.7153" y="968.292">SomeUseCaseImpl_3</text></g><g class="entity" data-entity="BindModule" data-source-line="33" data-uid="ent0024" id="entity_BindModule"><ellipse cx="1183" cy="219.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82.1611" x="1141.9194" y="249.292">BindModule</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="102.7578" x="1131.6211" y="198.9951">«Module(Hilt)»</text></g><g class="entity" data-entity="domain_core_module" data-source-line="37" data-uid="ent0025" id="entity_domain_core_module"><ellipse cx="1353" cy="938.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92.4971" x="1306.7515" y="968.292">:domain:core</text></g><g class="entity" data-entity="domain_shared_module" data-source-line="38" data-uid="ent0026" id="entity_domain_shared_module"><ellipse cx="1361" cy="659.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109.8672" x="1306.0664" y="689.292">:domain:shared</text></g><g class="entity" data-entity="core_ui_module" data-source-line="39" data-uid="ent0027" id="entity_core_ui_module"><ellipse cx="1492" cy="659.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="52.8281" x="1465.5859" y="689.292">:core:ui</text></g><g class="entity" data-entity="App" data-source-line="41" data-uid="ent0028" id="entity_App"><ellipse cx="1067" cy="51.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27.3506" x="1053.3247" y="81.292">App</text></g><g class="link" data-entity-1="App" data-entity-2="navigation" data-source-line="41" data-uid="lnk29" id="link_App_navigation"><path d="M1067,59.8569 C1067,67.8494 1067,81.5037 1067,97.5492 C1067,105.572 1067,114.1925 1067,123.0019 C1067,127.4066 1067,131.8586 1067,136.3066 C1067,138.5307 1067,140.7537 1067,142.9694 C1067,144.0773 1067,145.1833 1067,146.2867 C1067,146.5625 1067,163.1351 1067,163.4106" fill="none" id="App-to-navigation" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="1067,169.4106,1071,160.4106,1067,164.4106,1063,160.4106,1067,169.4106" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="navigation" data-entity-2="presentation" data-source-line="42" data-uid="lnk30" id="link_navigation_presentation"><path d="M1075.1013,245.2798 C1075.1918,245.4979 1075.2832,245.7167 1075.3754,245.9361 C1075.7443,246.8136 1076.1266,247.7009 1076.5225,248.5956 C1082.8575,262.9119 1092.69,279.1519 1107,288.2969 C1122.24,298.0369 1174.33,284.4569 1188,296.2969 C1190.7669,298.6938 1193.3144,301.2878 1195.6591,304.0456 C1196.8315,305.4245 1197.9531,306.8444 1199.0262,308.3011 C1199.5627,309.0294 1200.087,309.7669 1200.5995,310.5131 C1200.8557,310.8862 1201.1089,311.2615 1201.3592,311.6389 C1201.4844,311.8276 1198.3322,329.2873 1198.4559,329.4771" fill="none" id="navigation-to-presentation" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="1201.7325,334.5034,1200.1684,324.7795,1199.002,330.3148,1193.4667,329.1483,1201.7325,334.5034" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="SomeViewModel_1" data-entity-2="domain" data-source-line="43" data-uid="lnk31" id="link_SomeViewModel_1_domain"><path d="M798.24,436.2169 C796.335,456.1219 791.16,510.2319 786.395,560.0544 C786.0972,563.1683 785.801,566.2654 785.5073,569.3365 C785.3604,570.872 785.7854,566.4282 785.6399,567.9494" fill="none" id="SomeViewModel_1-to-domain" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="785.0687,573.9222,789.9074,565.3439,785.5447,568.9449,781.9437,564.5822,785.0687,573.9222" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="domain" data-entity-2="data" data-source-line="44" data-uid="lnk33" id="link_domain_data"><path d="M791.4338,660.0948 C791.9273,660.089 787.1659,660.1478 787.6964,660.142 C789.8183,660.1188 792.2338,660.0962 794.923,660.0765 C805.6795,659.9979 820.8138,659.9673 839.0419,660.1445 C875.4981,660.4991 924.33,661.685 975.2675,664.9806 C1077.1425,671.5719 1187.44,686.6019 1224,720.2969 C1227.5813,723.5969 1230.5689,727.402 1233.0548,731.5381 C1233.6763,732.5721 1234.2664,733.6268 1234.8266,734.6994 C1234.9667,734.9676 1235.1049,735.2369 1235.2412,735.5072 C1235.3093,735.6424 1235.3771,758.0747 1235.4443,758.2104" fill="none" id="domain-backto-data" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="785.4343,660.1682,794.4825,664.0579,790.4339,660.1071,794.3847,656.0585,785.4343,660.1682" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="data" data-entity-2="domain_core_module" data-source-line="45" data-uid="lnk34" id="link_data_domain_core_module"><path d="M1251.0458,818.6597 C1251.2439,818.8903 1251.4452,819.1245 1251.6495,819.3623 C1253.2839,821.2645 1255.1146,823.395 1257.1103,825.7175 C1265.0931,835.0075 1275.7163,847.3694 1286.9825,860.4794 C1309.515,886.6994 1330.7095,911.3613 1342.4095,924.9763" fill="none" id="data-to-domain_core_module" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="1346.32,929.5269,1343.4879,920.094,1343.0612,925.7347,1337.4205,925.308,1346.32,929.5269" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="SomeViewModel_1" data-entity-2="domain_shared_module" data-source-line="46" data-uid="lnk35" id="link_SomeViewModel_1_domain_shared_module"><path d="M804.62,436.2769 C817.58,454.0769 851.41,497.2769 890,520.2969 C1057.93,620.4969 1297.3366,651.2848 1346.3366,656.7248" fill="none" id="SomeViewModel_1-to-domain_shared_module" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="1352.3,657.3869,1343.7963,652.4182,1347.3305,656.8352,1342.9136,660.3694,1352.3,657.3869" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="SomeScreen_1" data-entity-2="core_ui_module" data-source-line="47" data-uid="lnk36" id="link_SomeScreen_1_core_ui_module"><path d="M970.71,436.1469 C980.06,454.8869 1006.61,502.0369 1045,520.2969 C1064.87,529.7469 1422.95,515.7169 1441,528.2969 C1482.97,557.5469 1490.0631,620.9063 1491.3831,644.3763" fill="none" id="SomeScreen_1-to-core_ui_module" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="1491.72,650.3669,1495.2083,641.1565,1491.4392,645.3748,1487.2209,641.6057,1491.72,650.3669" style="stroke:#181818;stroke-width:1;"/></g></g></svg></div><div class="puml dark" style=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" height="1029px" preserveAspectRatio="xMidYMid meet" style="width:1525px;height:1029px;background:#1B1B1B;" version="1.1" viewBox="0 0 1525 1029" width="1525px" zoomAndPan="magnify" class="diagram"><title>Feature module</title><defs/><g><rect fill="#1B1B1B" height="1029" style="stroke:none;stroke-width:1;" width="1525" x="0" y="0"/><g class="title" data-source-line="3"><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="124.9268" x="693.2437" y="22.9951">Feature module</text></g><g class="cluster" data-entity="feature_1" data-source-line="4" data-uid="ent0002" id="cluster_feature_1"><rect fill="none" height="927" rx="2.5" ry="2.5" style="stroke:#E7E7E7;stroke-width:1;" width="1276" x="7" y="96.2969"/><rect fill="none" height="10" style="stroke:#E7E7E7;stroke-width:1;" width="15" x="1263" y="101.2969"/><rect fill="none" height="2" style="stroke:#E7E7E7;stroke-width:1;" width="4" x="1261" y="103.2969"/><rect fill="none" height="2" style="stroke:#E7E7E7;stroke-width:1;" width="4" x="1261" y="107.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="138.5234" x="575.7383" y="122.292">feature:feature_1</text></g><g class="cluster" data-entity="presentation" data-source-line="5" data-uid="ent0003" id="cluster_presentation"><path d="M680.5,312.2969 L782.9316,312.2969 A3.75,3.75 0 0 1 785.4316,314.7969 L792.4316,334.5938 L1225.5,334.5938 A2.5,2.5 0 0 1 1228,337.0938 L1228,501.7969 A2.5,2.5 0 0 1 1225.5,504.2969 L680.5,504.2969 A2.5,2.5 0 0 1 678,501.7969 L678,314.7969 A2.5,2.5 0 0 1 680.5,312.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="678" x2="792.4316" y1="334.5938" y2="334.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="101.4316" x="682" y="327.292">presentation</text></g><g class="cluster" data-entity="screen_1" data-source-line="6" data-uid="ent0004" id="cluster_screen_1"><path d="M712.5,363.2969 L782.7344,363.2969 A3.75,3.75 0 0 1 785.2344,365.7969 L792.2344,385.5938 L1185.5,385.5938 A2.5,2.5 0 0 1 1188,388.0938 L1188,469.7969 A2.5,2.5 0 0 1 1185.5,472.2969 L712.5,472.2969 A2.5,2.5 0 0 1 710,469.7969 L710,365.7969 A2.5,2.5 0 0 1 712.5,363.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="710" x2="792.2344" y1="385.5938" y2="385.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="69.2344" x="714" y="378.292">screen_1</text></g><g class="cluster" data-entity="navigation" data-source-line="12" data-uid="ent0008" id="cluster_navigation"><path d="M717.5,147.2969 L802.3838,147.2969 A3.75,3.75 0 0 1 804.8838,149.7969 L811.8838,169.5938 L1072.5,169.5938 A2.5,2.5 0 0 1 1075,172.0938 L1075,269.7969 A2.5,2.5 0 0 1 1072.5,272.2969 L717.5,272.2969 A2.5,2.5 0 0 1 715,269.7969 L715,149.7969 A2.5,2.5 0 0 1 717.5,147.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="715" x2="811.8838" y1="169.5938" y2="169.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="83.8838" x="719" y="162.292">navigation</text></g><g class="cluster" data-entity="domain" data-source-line="16" data-uid="ent0011" id="cluster_domain"><path d="M41.5,544.2969 L100.9404,544.2969 A3.75,3.75 0 0 1 103.4404,546.7969 L110.4404,566.5938 L782.5,566.5938 A2.5,2.5 0 0 1 785,569.0938 L785,882.7969 A2.5,2.5 0 0 1 782.5,885.2969 L41.5,885.2969 A2.5,2.5 0 0 1 39,882.7969 L39,546.7969 A2.5,2.5 0 0 1 41.5,544.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="39" x2="110.4404" y1="566.5938" y2="566.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="58.4404" x="43" y="559.292">domain</text></g><g class="cluster" data-entity="usecases" data-source-line="17" data-uid="ent0012" id="cluster_usecases"><path d="M73.5,595.2969 L146.2021,595.2969 A3.75,3.75 0 0 1 148.7021,597.7969 L155.7021,617.5938 L399.5,617.5938 A2.5,2.5 0 0 1 402,620.0938 L402,850.7969 A2.5,2.5 0 0 1 399.5,853.2969 L73.5,853.2969 A2.5,2.5 0 0 1 71,850.7969 L71,597.7969 A2.5,2.5 0 0 1 73.5,595.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="71" x2="155.7021" y1="617.5938" y2="617.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="71.7021" x="75" y="610.292">usecases</text></g><g class="cluster" data-entity="models" data-source-line="22" data-uid="ent0016" id="cluster_models"><path d="M428.5,595.2969 L486.3545,595.2969 A3.75,3.75 0 0 1 488.8545,597.7969 L495.8545,617.5938 L742.5,617.5938 A2.5,2.5 0 0 1 745,620.0938 L745,701.7969 A2.5,2.5 0 0 1 742.5,704.2969 L428.5,704.2969 A2.5,2.5 0 0 1 426,701.7969 L426,597.7969 A2.5,2.5 0 0 1 428.5,595.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="426" x2="495.8545" y1="617.5938" y2="617.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="56.8545" x="430" y="610.292">models</text></g><g class="cluster" data-entity="data" data-source-line="27" data-uid="ent0019" id="cluster_data"><path d="M827.5,736.2969 L864.1084,736.2969 A3.75,3.75 0 0 1 866.6084,738.7969 L873.6084,758.5938 L1248.5,758.5938 A2.5,2.5 0 0 1 1251,761.0938 L1251,988.7969 A2.5,2.5 0 0 1 1248.5,991.2969 L827.5,991.2969 A2.5,2.5 0 0 1 825,988.7969 L825,738.7969 A2.5,2.5 0 0 1 827.5,736.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="825" x2="873.6084" y1="758.5938" y2="758.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="35.6084" x="829" y="751.292">data</text></g><g class="cluster" data-entity="di" data-source-line="32" data-uid="ent0023" id="cluster_di"><path d="M1109.5,155.2969 L1125.3203,155.2969 A3.75,3.75 0 0 1 1127.8203,157.7969 L1134.8203,177.5938 L1256.5,177.5938 A2.5,2.5 0 0 1 1259,180.0938 L1259,261.7969 A2.5,2.5 0 0 1 1256.5,264.2969 L1109.5,264.2969 A2.5,2.5 0 0 1 1107,261.7969 L1107,157.7969 A2.5,2.5 0 0 1 1109.5,155.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="1107" x2="1134.8203" y1="177.5938" y2="177.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="14.8203" x="1111" y="170.292">di</text></g><g class="entity" data-entity="SomeScreen_1" data-source-line="7" data-uid="ent0005" id="entity_SomeScreen_1"><ellipse cx="967" cy="427.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104.0498" x="914.9751" y="457.292">SomeScreen_1</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="101.7461" x="916.127" y="406.9951">«composable»</text></g><g class="entity" data-entity="SomeViewModel_1" data-source-line="8" data-uid="ent0006" id="entity_SomeViewModel_1"><ellipse cx="799" cy="427.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="131.1748" x="733.4126" y="457.292">SomeViewModel_1</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="116.4912" x="740.7544" y="406.9951">«HiltViewModel»</text></g><g class="entity" data-entity="UiState" data-source-line="9" data-uid="ent0007" id="entity_UiState"><ellipse cx="1117" cy="427.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="51.1943" x="1091.4028" y="457.292">UiState</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="92.627" x="1070.6865" y="406.9951">«immutable»</text></g><g class="entity" data-entity="FeatureRoutes" data-source-line="13" data-uid="ent0009" id="entity_FeatureRoutes"><ellipse cx="798" cy="219.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="102.5391" x="746.7305" y="249.292">FeatureRoutes</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="87.7461" x="754.127" y="198.9951">«srializable»</text></g><g class="entity" data-entity="FeatureNavGraph" data-source-line="14" data-uid="ent0010" id="entity_FeatureNavGraph"><ellipse cx="962" cy="219.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="124.2568" x="899.8716" y="249.292">FeatureNavGraph</text></g><g class="entity" data-entity="SomeUseCase_1" data-source-line="18" data-uid="ent0013" id="entity_SomeUseCase_1"><ellipse cx="153" cy="659.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116.0264" x="94.9868" y="689.292">SomeUseCase_1</text></g><g class="entity" data-entity="SomeUseCase_2" data-source-line="19" data-uid="ent0014" id="entity_SomeUseCase_2"><ellipse cx="320" cy="659.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116.0264" x="261.9868" y="689.292">SomeUseCase_2</text></g><g class="entity" data-entity="SomeUseCase_3" data-source-line="20" data-uid="ent0015" id="entity_SomeUseCase_3"><ellipse cx="153" cy="808.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116.0264" x="94.9868" y="838.292">SomeUseCase_3</text></g><g class="entity" data-entity="FeatureModel_1" data-source-line="23" data-uid="ent0017" id="entity_FeatureModel_1"><ellipse cx="505" cy="659.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111.918" x="449.041" y="689.292">FeatureModel_1</text></g><g class="entity" data-entity="FeatureModel_2" data-source-line="24" data-uid="ent0018" id="entity_FeatureModel_2"><ellipse cx="666" cy="659.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111.918" x="610.041" y="689.292">FeatureModel_2</text></g><g class="entity" data-entity="SomeUseCaseImpl_1" data-source-line="28" data-uid="ent0020" id="entity_SomeUseCaseImpl_1"><ellipse cx="930" cy="808.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146.5693" x="856.7153" y="838.292">SomeUseCaseImpl_1</text></g><g class="entity" data-entity="SomeUseCaseImpl_2" data-source-line="29" data-uid="ent0021" id="entity_SomeUseCaseImpl_2"><ellipse cx="1127" cy="808.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146.5693" x="1053.7153" y="838.292">SomeUseCaseImpl_2</text></g><g class="entity" data-entity="SomeUseCaseImpl_3" data-source-line="30" data-uid="ent0022" id="entity_SomeUseCaseImpl_3"><ellipse cx="930" cy="938.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146.5693" x="856.7153" y="968.292">SomeUseCaseImpl_3</text></g><g class="entity" data-entity="BindModule" data-source-line="33" data-uid="ent0024" id="entity_BindModule"><ellipse cx="1183" cy="219.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82.1611" x="1141.9194" y="249.292">BindModule</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="102.7578" x="1131.6211" y="198.9951">«Module(Hilt)»</text></g><g class="entity" data-entity="domain_core_module" data-source-line="37" data-uid="ent0025" id="entity_domain_core_module"><ellipse cx="1353" cy="938.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92.4971" x="1306.7515" y="968.292">:domain:core</text></g><g class="entity" data-entity="domain_shared_module" data-source-line="38" data-uid="ent0026" id="entity_domain_shared_module"><ellipse cx="1361" cy="659.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109.8672" x="1306.0664" y="689.292">:domain:shared</text></g><g class="entity" data-entity="core_ui_module" data-source-line="39" data-uid="ent0027" id="entity_core_ui_module"><ellipse cx="1492" cy="659.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="52.8281" x="1465.5859" y="689.292">:core:ui</text></g><g class="entity" data-entity="App" data-source-line="41" data-uid="ent0028" id="entity_App"><ellipse cx="1067" cy="51.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27.3506" x="1053.3247" y="81.292">App</text></g><g class="link" data-entity-1="App" data-entity-2="navigation" data-source-line="41" data-uid="lnk29" id="link_App_navigation"><path d="M1067,59.8569 C1067,67.8494 1067,81.5037 1067,97.5492 C1067,105.572 1067,114.1925 1067,123.0019 C1067,127.4066 1067,131.8586 1067,136.3066 C1067,138.5307 1067,140.7537 1067,142.9694 C1067,144.0773 1067,145.1833 1067,146.2867 C1067,146.5625 1067,163.1351 1067,163.4106" fill="none" id="App-to-navigation" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="1067,169.4106,1071,160.4106,1067,164.4106,1063,160.4106,1067,169.4106" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="navigation" data-entity-2="presentation" data-source-line="42" data-uid="lnk30" id="link_navigation_presentation"><path d="M1075.1013,245.2798 C1075.1918,245.4979 1075.2832,245.7167 1075.3754,245.9361 C1075.7443,246.8136 1076.1266,247.7009 1076.5225,248.5956 C1082.8575,262.9119 1092.69,279.1519 1107,288.2969 C1122.24,298.0369 1174.33,284.4569 1188,296.2969 C1190.7669,298.6938 1193.3144,301.2878 1195.6591,304.0456 C1196.8315,305.4245 1197.9531,306.8444 1199.0262,308.3011 C1199.5627,309.0294 1200.087,309.7669 1200.5995,310.5131 C1200.8557,310.8862 1201.1089,311.2615 1201.3592,311.6389 C1201.4844,311.8276 1198.3322,329.2873 1198.4559,329.4771" fill="none" id="navigation-to-presentation" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="1201.7325,334.5034,1200.1684,324.7795,1199.002,330.3148,1193.4667,329.1483,1201.7325,334.5034" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="SomeViewModel_1" data-entity-2="domain" data-source-line="43" data-uid="lnk31" id="link_SomeViewModel_1_domain"><path d="M798.24,436.2169 C796.335,456.1219 791.16,510.2319 786.395,560.0544 C786.0972,563.1683 785.801,566.2654 785.5073,569.3365 C785.3604,570.872 785.7854,566.4282 785.6399,567.9494" fill="none" id="SomeViewModel_1-to-domain" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="785.0687,573.9222,789.9074,565.3439,785.5447,568.9449,781.9437,564.5822,785.0687,573.9222" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="domain" data-entity-2="data" data-source-line="44" data-uid="lnk33" id="link_domain_data"><path d="M791.4338,660.0948 C791.9273,660.089 787.1659,660.1478 787.6964,660.142 C789.8183,660.1188 792.2338,660.0962 794.923,660.0765 C805.6795,659.9979 820.8138,659.9673 839.0419,660.1445 C875.4981,660.4991 924.33,661.685 975.2675,664.9806 C1077.1425,671.5719 1187.44,686.6019 1224,720.2969 C1227.5813,723.5969 1230.5689,727.402 1233.0548,731.5381 C1233.6763,732.5721 1234.2664,733.6268 1234.8266,734.6994 C1234.9667,734.9676 1235.1049,735.2369 1235.2412,735.5072 C1235.3093,735.6424 1235.3771,758.0747 1235.4443,758.2104" fill="none" id="domain-backto-data" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="785.4343,660.1682,794.4825,664.0579,790.4339,660.1071,794.3847,656.0585,785.4343,660.1682" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="data" data-entity-2="domain_core_module" data-source-line="45" data-uid="lnk34" id="link_data_domain_core_module"><path d="M1251.0458,818.6597 C1251.2439,818.8903 1251.4452,819.1245 1251.6495,819.3623 C1253.2839,821.2645 1255.1146,823.395 1257.1103,825.7175 C1265.0931,835.0075 1275.7163,847.3694 1286.9825,860.4794 C1309.515,886.6994 1330.7095,911.3613 1342.4095,924.9763" fill="none" id="data-to-domain_core_module" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="1346.32,929.5269,1343.4879,920.094,1343.0612,925.7347,1337.4205,925.308,1346.32,929.5269" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="SomeViewModel_1" data-entity-2="domain_shared_module" data-source-line="46" data-uid="lnk35" id="link_SomeViewModel_1_domain_shared_module"><path d="M804.62,436.2769 C817.58,454.0769 851.41,497.2769 890,520.2969 C1057.93,620.4969 1297.3366,651.2848 1346.3366,656.7248" fill="none" id="SomeViewModel_1-to-domain_shared_module" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="1352.3,657.3869,1343.7963,652.4182,1347.3305,656.8352,1342.9136,660.3694,1352.3,657.3869" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="SomeScreen_1" data-entity-2="core_ui_module" data-source-line="47" data-uid="lnk36" id="link_SomeScreen_1_core_ui_module"><path d="M970.71,436.1469 C980.06,454.8869 1006.61,502.0369 1045,520.2969 C1064.87,529.7469 1422.95,515.7169 1441,528.2969 C1482.97,557.5469 1490.0631,620.9063 1491.3831,644.3763" fill="none" id="SomeScreen_1-to-core_ui_module" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="1491.72,650.3669,1495.2083,641.1565,1491.4392,645.3748,1487.2209,641.6057,1491.72,650.3669" style="stroke:#E7E7E7;stroke-width:1;"/></g></g></svg></div></div>
+
+<h3 id="summary">Summary</h3>
+<p>So, I tried to make an optimal architecture tailored to project's set of requirements.</p>
+<ul>
+<li>data module as <a href="https://en.wikipedia.org/wiki/Single_source_of_truth">SSOT</a></li>
+<li>domain module as a model</li>
+<li>feature module as a UI</li>
+<li>app module as a glue</li>
+</ul>
+<hr />
+<p>You know, there are no universal scheme for organizing modules and creating architecture. It depends on requirements. In text above was certain example with certain requirements, and that solution can not be applied for another type of project. </p>
+<p><strong>Do not copy without thinking.</strong></p>
+<p><em>Okay, it's all for now. Thanks for reading!</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Content is licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. Code snippets are under <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">MIT License</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.indexes", "content.code.copy", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="../../../assets/mkdocs_puml/puml.js"></script>
+      
+        <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+      
+        <script src="../../../assets/mkdocs_puml/interaction.js"></script>
+      
+    
+  </body>
+</html>

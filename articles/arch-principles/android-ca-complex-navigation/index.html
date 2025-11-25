@@ -1,0 +1,925 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Technical insights and practical guides across Android development.">
+      
+      
+      
+        <link rel="canonical" href="https://mardsoul.github.io/dev-in-action/articles/arch-principles/android-ca-complex-navigation/">
+      
+      
+        <link rel="prev" href="../android-ca-independent-features/">
+      
+      
+        <link rel="next" href="../../using-mockk-preview/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+    
+    
+      
+        <title>Going ahead (Part 2). Example with complex navigation - Dev In Action</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.618322db.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/mkdocs_puml/puml.css">
+    
+      <link rel="stylesheet" href="../../../assets/mkdocs_puml/interaction.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#going-ahead-with-clean-architecture-in-android-example-with-complex-navigation" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Dev In Action" class="md-header__button md-logo" aria-label="Dev In Action" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Dev In Action
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Going ahead (Part 2). Example with complex navigation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home/Profile
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Articles
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Dev In Action" class="md-nav__button md-logo" aria-label="Dev In Action" data-md-component="logo">
+      
+  <img src="../../../assets/images/logo.svg" alt="logo">
+
+    </a>
+    Dev In Action
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home/Profile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Articles
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_2" id="__nav_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Articles
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Android Clean Architecture in Action
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Android Clean Architecture in Action
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../android-ca-independent-features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Intro (Part 1). Example with independent features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Going ahead (Part 2). Example with complex navigation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Going ahead (Part 2). Example with complex navigation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example-2-complex-navigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 2. Complex navigation.
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example 2. Complex navigation.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Requirements
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generally-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Generally structure
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigation-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Navigation module
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feature-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Feature module
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#presummary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PreSummary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#more-cleaner-solution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        More cleaner solution
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../using-mockk-preview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Using MockK library in Jetpack Compose Preview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reverse-basic-example/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Simple example of reverse .apk
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sharing-data-between-viewmodels/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sharing data between ViewModels
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="going-ahead-with-clean-architecture-in-android-example-with-complex-navigation">Going ahead with Clean Architecture in Android. Example with complex navigation.</h1>
+<p><strong>Date of publication:</strong> 17 Nov 2025</p>
+<p><em>Let's continue talking about Clean Architecture in Android.</em></p>
+<p>Unlike previous example we will move away out of <strong>encapsulation</strong> principle. It's not so good but if we have some complex navigation when you have to move to different features and don't have a main menu or something like this, it's much more simple is making pubic routes than injecting navigation functions from NavGraph to each composable component.</p>
+<hr />
+<p><em>Here I wanna concentrate on navigation.</em></p>
+<h2 id="example-2-complex-navigation">Example 2. Complex navigation.</h2>
+<h3 id="requirements">Requirements</h3>
+<ol>
+<li>Platform is only Android (not CMP/KMP)</li>
+<li>Our project is multi-module</li>
+<li>The :app module have a navigation to each screen</li>
+<li>The features have their own screens</li>
+<li>The features are independent on each other</li>
+<li>The feature <strong>can</strong> navigate to another feature directly</li>
+<li>There's some pieces of data that have to be in many screens</li>
+</ol>
+<h3 id="structure">Structure</h3>
+<h4 id="generally-structure">Generally structure</h4>
+<div class='puml-container'><div class="puml light" style=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" height="1029px" preserveAspectRatio="xMidYMid meet" style="width:1525px;height:1029px;background:#FFFFFF;" version="1.1" viewBox="0 0 1525 1029" width="1525px" zoomAndPan="magnify" class="diagram"><title>Feature module</title><defs/><g><g class="title" data-source-line="3"><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="124.9268" x="693.2437" y="22.9951">Feature module</text></g><g class="cluster" data-entity="feature_1" data-source-line="4" data-uid="ent0002" id="cluster_feature_1"><rect fill="none" height="927" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:1;" width="1276" x="7" y="96.2969"/><rect fill="none" height="10" style="stroke:#181818;stroke-width:1;" width="15" x="1263" y="101.2969"/><rect fill="none" height="2" style="stroke:#181818;stroke-width:1;" width="4" x="1261" y="103.2969"/><rect fill="none" height="2" style="stroke:#181818;stroke-width:1;" width="4" x="1261" y="107.2969"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="138.5234" x="575.7383" y="122.292">feature:feature_1</text></g><g class="cluster" data-entity="presentation" data-source-line="5" data-uid="ent0003" id="cluster_presentation"><path d="M680.5,312.2969 L782.9316,312.2969 A3.75,3.75 0 0 1 785.4316,314.7969 L792.4316,334.5938 L1225.5,334.5938 A2.5,2.5 0 0 1 1228,337.0938 L1228,501.7969 A2.5,2.5 0 0 1 1225.5,504.2969 L680.5,504.2969 A2.5,2.5 0 0 1 678,501.7969 L678,314.7969 A2.5,2.5 0 0 1 680.5,312.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="678" x2="792.4316" y1="334.5938" y2="334.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="101.4316" x="682" y="327.292">presentation</text></g><g class="cluster" data-entity="screen_1" data-source-line="6" data-uid="ent0004" id="cluster_screen_1"><path d="M712.5,363.2969 L782.7344,363.2969 A3.75,3.75 0 0 1 785.2344,365.7969 L792.2344,385.5938 L1185.5,385.5938 A2.5,2.5 0 0 1 1188,388.0938 L1188,469.7969 A2.5,2.5 0 0 1 1185.5,472.2969 L712.5,472.2969 A2.5,2.5 0 0 1 710,469.7969 L710,365.7969 A2.5,2.5 0 0 1 712.5,363.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="710" x2="792.2344" y1="385.5938" y2="385.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="69.2344" x="714" y="378.292">screen_1</text></g><g class="cluster" data-entity="navigation" data-source-line="12" data-uid="ent0008" id="cluster_navigation"><path d="M717.5,147.2969 L802.3838,147.2969 A3.75,3.75 0 0 1 804.8838,149.7969 L811.8838,169.5938 L1072.5,169.5938 A2.5,2.5 0 0 1 1075,172.0938 L1075,269.7969 A2.5,2.5 0 0 1 1072.5,272.2969 L717.5,272.2969 A2.5,2.5 0 0 1 715,269.7969 L715,149.7969 A2.5,2.5 0 0 1 717.5,147.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="715" x2="811.8838" y1="169.5938" y2="169.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="83.8838" x="719" y="162.292">navigation</text></g><g class="cluster" data-entity="domain" data-source-line="16" data-uid="ent0011" id="cluster_domain"><path d="M41.5,544.2969 L100.9404,544.2969 A3.75,3.75 0 0 1 103.4404,546.7969 L110.4404,566.5938 L782.5,566.5938 A2.5,2.5 0 0 1 785,569.0938 L785,882.7969 A2.5,2.5 0 0 1 782.5,885.2969 L41.5,885.2969 A2.5,2.5 0 0 1 39,882.7969 L39,546.7969 A2.5,2.5 0 0 1 41.5,544.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="39" x2="110.4404" y1="566.5938" y2="566.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="58.4404" x="43" y="559.292">domain</text></g><g class="cluster" data-entity="usecases" data-source-line="17" data-uid="ent0012" id="cluster_usecases"><path d="M73.5,595.2969 L146.2021,595.2969 A3.75,3.75 0 0 1 148.7021,597.7969 L155.7021,617.5938 L399.5,617.5938 A2.5,2.5 0 0 1 402,620.0938 L402,850.7969 A2.5,2.5 0 0 1 399.5,853.2969 L73.5,853.2969 A2.5,2.5 0 0 1 71,850.7969 L71,597.7969 A2.5,2.5 0 0 1 73.5,595.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="71" x2="155.7021" y1="617.5938" y2="617.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="71.7021" x="75" y="610.292">usecases</text></g><g class="cluster" data-entity="models" data-source-line="22" data-uid="ent0016" id="cluster_models"><path d="M428.5,595.2969 L486.3545,595.2969 A3.75,3.75 0 0 1 488.8545,597.7969 L495.8545,617.5938 L742.5,617.5938 A2.5,2.5 0 0 1 745,620.0938 L745,701.7969 A2.5,2.5 0 0 1 742.5,704.2969 L428.5,704.2969 A2.5,2.5 0 0 1 426,701.7969 L426,597.7969 A2.5,2.5 0 0 1 428.5,595.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="426" x2="495.8545" y1="617.5938" y2="617.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="56.8545" x="430" y="610.292">models</text></g><g class="cluster" data-entity="data" data-source-line="27" data-uid="ent0019" id="cluster_data"><path d="M827.5,736.2969 L864.1084,736.2969 A3.75,3.75 0 0 1 866.6084,738.7969 L873.6084,758.5938 L1248.5,758.5938 A2.5,2.5 0 0 1 1251,761.0938 L1251,988.7969 A2.5,2.5 0 0 1 1248.5,991.2969 L827.5,991.2969 A2.5,2.5 0 0 1 825,988.7969 L825,738.7969 A2.5,2.5 0 0 1 827.5,736.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="825" x2="873.6084" y1="758.5938" y2="758.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="35.6084" x="829" y="751.292">data</text></g><g class="cluster" data-entity="di" data-source-line="32" data-uid="ent0023" id="cluster_di"><path d="M1109.5,155.2969 L1125.3203,155.2969 A3.75,3.75 0 0 1 1127.8203,157.7969 L1134.8203,177.5938 L1256.5,177.5938 A2.5,2.5 0 0 1 1259,180.0938 L1259,261.7969 A2.5,2.5 0 0 1 1256.5,264.2969 L1109.5,264.2969 A2.5,2.5 0 0 1 1107,261.7969 L1107,157.7969 A2.5,2.5 0 0 1 1109.5,155.2969" fill="none" style="stroke:#000000;stroke-width:1.5;"/><line style="stroke:#000000;stroke-width:1.5;" x1="1107" x2="1134.8203" y1="177.5938" y2="177.5938"/><text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="14.8203" x="1111" y="170.292">di</text></g><g class="entity" data-entity="SomeScreen_1" data-source-line="7" data-uid="ent0005" id="entity_SomeScreen_1"><ellipse cx="967" cy="427.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104.0498" x="914.9751" y="457.292">SomeScreen_1</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="101.7461" x="916.127" y="406.9951">«composable»</text></g><g class="entity" data-entity="SomeViewModel_1" data-source-line="8" data-uid="ent0006" id="entity_SomeViewModel_1"><ellipse cx="799" cy="427.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="131.1748" x="733.4126" y="457.292">SomeViewModel_1</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="116.4912" x="740.7544" y="406.9951">«HiltViewModel»</text></g><g class="entity" data-entity="UiState" data-source-line="9" data-uid="ent0007" id="entity_UiState"><ellipse cx="1117" cy="427.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="51.1943" x="1091.4028" y="457.292">UiState</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="92.627" x="1070.6865" y="406.9951">«immutable»</text></g><g class="entity" data-entity="FeatureRoutes" data-source-line="13" data-uid="ent0009" id="entity_FeatureRoutes"><ellipse cx="798" cy="219.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="102.5391" x="746.7305" y="249.292">FeatureRoutes</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="87.7461" x="754.127" y="198.9951">«srializable»</text></g><g class="entity" data-entity="FeatureNavGraph" data-source-line="14" data-uid="ent0010" id="entity_FeatureNavGraph"><ellipse cx="962" cy="219.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="124.2568" x="899.8716" y="249.292">FeatureNavGraph</text></g><g class="entity" data-entity="SomeUseCase_1" data-source-line="18" data-uid="ent0013" id="entity_SomeUseCase_1"><ellipse cx="153" cy="659.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116.0264" x="94.9868" y="689.292">SomeUseCase_1</text></g><g class="entity" data-entity="SomeUseCase_2" data-source-line="19" data-uid="ent0014" id="entity_SomeUseCase_2"><ellipse cx="320" cy="659.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116.0264" x="261.9868" y="689.292">SomeUseCase_2</text></g><g class="entity" data-entity="SomeUseCase_3" data-source-line="20" data-uid="ent0015" id="entity_SomeUseCase_3"><ellipse cx="153" cy="808.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116.0264" x="94.9868" y="838.292">SomeUseCase_3</text></g><g class="entity" data-entity="FeatureModel_1" data-source-line="23" data-uid="ent0017" id="entity_FeatureModel_1"><ellipse cx="505" cy="659.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111.918" x="449.041" y="689.292">FeatureModel_1</text></g><g class="entity" data-entity="FeatureModel_2" data-source-line="24" data-uid="ent0018" id="entity_FeatureModel_2"><ellipse cx="666" cy="659.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111.918" x="610.041" y="689.292">FeatureModel_2</text></g><g class="entity" data-entity="SomeUseCaseImpl_1" data-source-line="28" data-uid="ent0020" id="entity_SomeUseCaseImpl_1"><ellipse cx="930" cy="808.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146.5693" x="856.7153" y="838.292">SomeUseCaseImpl_1</text></g><g class="entity" data-entity="SomeUseCaseImpl_2" data-source-line="29" data-uid="ent0021" id="entity_SomeUseCaseImpl_2"><ellipse cx="1127" cy="808.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146.5693" x="1053.7153" y="838.292">SomeUseCaseImpl_2</text></g><g class="entity" data-entity="SomeUseCaseImpl_3" data-source-line="30" data-uid="ent0022" id="entity_SomeUseCaseImpl_3"><ellipse cx="930" cy="938.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146.5693" x="856.7153" y="968.292">SomeUseCaseImpl_3</text></g><g class="entity" data-entity="BindModule" data-source-line="33" data-uid="ent0024" id="entity_BindModule"><ellipse cx="1183" cy="219.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82.1611" x="1141.9194" y="249.292">BindModule</text><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="102.7578" x="1131.6211" y="198.9951">«Module(Hilt)»</text></g><g class="entity" data-entity="domain_core_module" data-source-line="37" data-uid="ent0025" id="entity_domain_core_module"><ellipse cx="1353" cy="938.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92.4971" x="1306.7515" y="968.292">:domain:core</text></g><g class="entity" data-entity="domain_shared_module" data-source-line="38" data-uid="ent0026" id="entity_domain_shared_module"><ellipse cx="1361" cy="659.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109.8672" x="1306.0664" y="689.292">:domain:shared</text></g><g class="entity" data-entity="core_ui_module" data-source-line="39" data-uid="ent0027" id="entity_core_ui_module"><ellipse cx="1492" cy="659.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="52.8281" x="1465.5859" y="689.292">:core:ui</text></g><g class="entity" data-entity="App" data-source-line="41" data-uid="ent0028" id="entity_App"><ellipse cx="1067" cy="51.2969" fill="#F1F1F1" rx="8" ry="8" style="stroke:#181818;stroke-width:0.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27.3506" x="1053.3247" y="81.292">App</text></g><g class="link" data-entity-1="App" data-entity-2="navigation" data-source-line="41" data-uid="lnk29" id="link_App_navigation"><path d="M1067,59.8569 C1067,67.8494 1067,81.5037 1067,97.5492 C1067,105.572 1067,114.1925 1067,123.0019 C1067,127.4066 1067,131.8586 1067,136.3066 C1067,138.5307 1067,140.7537 1067,142.9694 C1067,144.0773 1067,145.1833 1067,146.2867 C1067,146.5625 1067,163.1351 1067,163.4106" fill="none" id="App-to-navigation" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="1067,169.4106,1071,160.4106,1067,164.4106,1063,160.4106,1067,169.4106" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="navigation" data-entity-2="presentation" data-source-line="42" data-uid="lnk30" id="link_navigation_presentation"><path d="M1075.1013,245.2798 C1075.1918,245.4979 1075.2832,245.7167 1075.3754,245.9361 C1075.7443,246.8136 1076.1266,247.7009 1076.5225,248.5956 C1082.8575,262.9119 1092.69,279.1519 1107,288.2969 C1122.24,298.0369 1174.33,284.4569 1188,296.2969 C1190.7669,298.6938 1193.3144,301.2878 1195.6591,304.0456 C1196.8315,305.4245 1197.9531,306.8444 1199.0262,308.3011 C1199.5627,309.0294 1200.087,309.7669 1200.5995,310.5131 C1200.8557,310.8862 1201.1089,311.2615 1201.3592,311.6389 C1201.4844,311.8276 1198.3322,329.2873 1198.4559,329.4771" fill="none" id="navigation-to-presentation" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="1201.7325,334.5034,1200.1684,324.7795,1199.002,330.3148,1193.4667,329.1483,1201.7325,334.5034" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="SomeViewModel_1" data-entity-2="domain" data-source-line="43" data-uid="lnk31" id="link_SomeViewModel_1_domain"><path d="M798.24,436.2169 C796.335,456.1219 791.16,510.2319 786.395,560.0544 C786.0972,563.1683 785.801,566.2654 785.5073,569.3365 C785.3604,570.872 785.7854,566.4282 785.6399,567.9494" fill="none" id="SomeViewModel_1-to-domain" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="785.0687,573.9222,789.9074,565.3439,785.5447,568.9449,781.9437,564.5822,785.0687,573.9222" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="domain" data-entity-2="data" data-source-line="44" data-uid="lnk33" id="link_domain_data"><path d="M791.4338,660.0948 C791.9273,660.089 787.1659,660.1478 787.6964,660.142 C789.8183,660.1188 792.2338,660.0962 794.923,660.0765 C805.6795,659.9979 820.8138,659.9673 839.0419,660.1445 C875.4981,660.4991 924.33,661.685 975.2675,664.9806 C1077.1425,671.5719 1187.44,686.6019 1224,720.2969 C1227.5813,723.5969 1230.5689,727.402 1233.0548,731.5381 C1233.6763,732.5721 1234.2664,733.6268 1234.8266,734.6994 C1234.9667,734.9676 1235.1049,735.2369 1235.2412,735.5072 C1235.3093,735.6424 1235.3771,758.0747 1235.4443,758.2104" fill="none" id="domain-backto-data" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="785.4343,660.1682,794.4825,664.0579,790.4339,660.1071,794.3847,656.0585,785.4343,660.1682" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="data" data-entity-2="domain_core_module" data-source-line="45" data-uid="lnk34" id="link_data_domain_core_module"><path d="M1251.0458,818.6597 C1251.2439,818.8903 1251.4452,819.1245 1251.6495,819.3623 C1253.2839,821.2645 1255.1146,823.395 1257.1103,825.7175 C1265.0931,835.0075 1275.7163,847.3694 1286.9825,860.4794 C1309.515,886.6994 1330.7095,911.3613 1342.4095,924.9763" fill="none" id="data-to-domain_core_module" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="1346.32,929.5269,1343.4879,920.094,1343.0612,925.7347,1337.4205,925.308,1346.32,929.5269" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="SomeViewModel_1" data-entity-2="domain_shared_module" data-source-line="46" data-uid="lnk35" id="link_SomeViewModel_1_domain_shared_module"><path d="M804.62,436.2769 C817.58,454.0769 851.41,497.2769 890,520.2969 C1057.93,620.4969 1297.3366,651.2848 1346.3366,656.7248" fill="none" id="SomeViewModel_1-to-domain_shared_module" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="1352.3,657.3869,1343.7963,652.4182,1347.3305,656.8352,1342.9136,660.3694,1352.3,657.3869" style="stroke:#181818;stroke-width:1;"/></g><g class="link" data-entity-1="SomeScreen_1" data-entity-2="core_ui_module" data-source-line="47" data-uid="lnk36" id="link_SomeScreen_1_core_ui_module"><path d="M970.71,436.1469 C980.06,454.8869 1006.61,502.0369 1045,520.2969 C1064.87,529.7469 1422.95,515.7169 1441,528.2969 C1482.97,557.5469 1490.0631,620.9063 1491.3831,644.3763" fill="none" id="SomeScreen_1-to-core_ui_module" style="stroke:#181818;stroke-width:1;"/><polygon fill="#181818" points="1491.72,650.3669,1495.2083,641.1565,1491.4392,645.3748,1487.2209,641.6057,1491.72,650.3669" style="stroke:#181818;stroke-width:1;"/></g></g></svg></div><div class="puml dark" style=""><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="DESCRIPTION" height="1029px" preserveAspectRatio="xMidYMid meet" style="width:1525px;height:1029px;background:#1B1B1B;" version="1.1" viewBox="0 0 1525 1029" width="1525px" zoomAndPan="magnify" class="diagram"><title>Feature module</title><defs/><g><rect fill="#1B1B1B" height="1029" style="stroke:none;stroke-width:1;" width="1525" x="0" y="0"/><g class="title" data-source-line="3"><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="124.9268" x="693.2437" y="22.9951">Feature module</text></g><g class="cluster" data-entity="feature_1" data-source-line="4" data-uid="ent0002" id="cluster_feature_1"><rect fill="none" height="927" rx="2.5" ry="2.5" style="stroke:#E7E7E7;stroke-width:1;" width="1276" x="7" y="96.2969"/><rect fill="none" height="10" style="stroke:#E7E7E7;stroke-width:1;" width="15" x="1263" y="101.2969"/><rect fill="none" height="2" style="stroke:#E7E7E7;stroke-width:1;" width="4" x="1261" y="103.2969"/><rect fill="none" height="2" style="stroke:#E7E7E7;stroke-width:1;" width="4" x="1261" y="107.2969"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="138.5234" x="575.7383" y="122.292">feature:feature_1</text></g><g class="cluster" data-entity="presentation" data-source-line="5" data-uid="ent0003" id="cluster_presentation"><path d="M680.5,312.2969 L782.9316,312.2969 A3.75,3.75 0 0 1 785.4316,314.7969 L792.4316,334.5938 L1225.5,334.5938 A2.5,2.5 0 0 1 1228,337.0938 L1228,501.7969 A2.5,2.5 0 0 1 1225.5,504.2969 L680.5,504.2969 A2.5,2.5 0 0 1 678,501.7969 L678,314.7969 A2.5,2.5 0 0 1 680.5,312.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="678" x2="792.4316" y1="334.5938" y2="334.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="101.4316" x="682" y="327.292">presentation</text></g><g class="cluster" data-entity="screen_1" data-source-line="6" data-uid="ent0004" id="cluster_screen_1"><path d="M712.5,363.2969 L782.7344,363.2969 A3.75,3.75 0 0 1 785.2344,365.7969 L792.2344,385.5938 L1185.5,385.5938 A2.5,2.5 0 0 1 1188,388.0938 L1188,469.7969 A2.5,2.5 0 0 1 1185.5,472.2969 L712.5,472.2969 A2.5,2.5 0 0 1 710,469.7969 L710,365.7969 A2.5,2.5 0 0 1 712.5,363.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="710" x2="792.2344" y1="385.5938" y2="385.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="69.2344" x="714" y="378.292">screen_1</text></g><g class="cluster" data-entity="navigation" data-source-line="12" data-uid="ent0008" id="cluster_navigation"><path d="M717.5,147.2969 L802.3838,147.2969 A3.75,3.75 0 0 1 804.8838,149.7969 L811.8838,169.5938 L1072.5,169.5938 A2.5,2.5 0 0 1 1075,172.0938 L1075,269.7969 A2.5,2.5 0 0 1 1072.5,272.2969 L717.5,272.2969 A2.5,2.5 0 0 1 715,269.7969 L715,149.7969 A2.5,2.5 0 0 1 717.5,147.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="715" x2="811.8838" y1="169.5938" y2="169.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="83.8838" x="719" y="162.292">navigation</text></g><g class="cluster" data-entity="domain" data-source-line="16" data-uid="ent0011" id="cluster_domain"><path d="M41.5,544.2969 L100.9404,544.2969 A3.75,3.75 0 0 1 103.4404,546.7969 L110.4404,566.5938 L782.5,566.5938 A2.5,2.5 0 0 1 785,569.0938 L785,882.7969 A2.5,2.5 0 0 1 782.5,885.2969 L41.5,885.2969 A2.5,2.5 0 0 1 39,882.7969 L39,546.7969 A2.5,2.5 0 0 1 41.5,544.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="39" x2="110.4404" y1="566.5938" y2="566.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="58.4404" x="43" y="559.292">domain</text></g><g class="cluster" data-entity="usecases" data-source-line="17" data-uid="ent0012" id="cluster_usecases"><path d="M73.5,595.2969 L146.2021,595.2969 A3.75,3.75 0 0 1 148.7021,597.7969 L155.7021,617.5938 L399.5,617.5938 A2.5,2.5 0 0 1 402,620.0938 L402,850.7969 A2.5,2.5 0 0 1 399.5,853.2969 L73.5,853.2969 A2.5,2.5 0 0 1 71,850.7969 L71,597.7969 A2.5,2.5 0 0 1 73.5,595.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="71" x2="155.7021" y1="617.5938" y2="617.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="71.7021" x="75" y="610.292">usecases</text></g><g class="cluster" data-entity="models" data-source-line="22" data-uid="ent0016" id="cluster_models"><path d="M428.5,595.2969 L486.3545,595.2969 A3.75,3.75 0 0 1 488.8545,597.7969 L495.8545,617.5938 L742.5,617.5938 A2.5,2.5 0 0 1 745,620.0938 L745,701.7969 A2.5,2.5 0 0 1 742.5,704.2969 L428.5,704.2969 A2.5,2.5 0 0 1 426,701.7969 L426,597.7969 A2.5,2.5 0 0 1 428.5,595.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="426" x2="495.8545" y1="617.5938" y2="617.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="56.8545" x="430" y="610.292">models</text></g><g class="cluster" data-entity="data" data-source-line="27" data-uid="ent0019" id="cluster_data"><path d="M827.5,736.2969 L864.1084,736.2969 A3.75,3.75 0 0 1 866.6084,738.7969 L873.6084,758.5938 L1248.5,758.5938 A2.5,2.5 0 0 1 1251,761.0938 L1251,988.7969 A2.5,2.5 0 0 1 1248.5,991.2969 L827.5,991.2969 A2.5,2.5 0 0 1 825,988.7969 L825,738.7969 A2.5,2.5 0 0 1 827.5,736.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="825" x2="873.6084" y1="758.5938" y2="758.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="35.6084" x="829" y="751.292">data</text></g><g class="cluster" data-entity="di" data-source-line="32" data-uid="ent0023" id="cluster_di"><path d="M1109.5,155.2969 L1125.3203,155.2969 A3.75,3.75 0 0 1 1127.8203,157.7969 L1134.8203,177.5938 L1256.5,177.5938 A2.5,2.5 0 0 1 1259,180.0938 L1259,261.7969 A2.5,2.5 0 0 1 1256.5,264.2969 L1109.5,264.2969 A2.5,2.5 0 0 1 1107,261.7969 L1107,157.7969 A2.5,2.5 0 0 1 1109.5,155.2969" fill="none" style="stroke:#FFFFFF;stroke-width:1.5;"/><line style="stroke:#FFFFFF;stroke-width:1.5;" x1="1107" x2="1134.8203" y1="177.5938" y2="177.5938"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing" textLength="14.8203" x="1111" y="170.292">di</text></g><g class="entity" data-entity="SomeScreen_1" data-source-line="7" data-uid="ent0005" id="entity_SomeScreen_1"><ellipse cx="967" cy="427.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="104.0498" x="914.9751" y="457.292">SomeScreen_1</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="101.7461" x="916.127" y="406.9951">«composable»</text></g><g class="entity" data-entity="SomeViewModel_1" data-source-line="8" data-uid="ent0006" id="entity_SomeViewModel_1"><ellipse cx="799" cy="427.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="131.1748" x="733.4126" y="457.292">SomeViewModel_1</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="116.4912" x="740.7544" y="406.9951">«HiltViewModel»</text></g><g class="entity" data-entity="UiState" data-source-line="9" data-uid="ent0007" id="entity_UiState"><ellipse cx="1117" cy="427.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="51.1943" x="1091.4028" y="457.292">UiState</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="92.627" x="1070.6865" y="406.9951">«immutable»</text></g><g class="entity" data-entity="FeatureRoutes" data-source-line="13" data-uid="ent0009" id="entity_FeatureRoutes"><ellipse cx="798" cy="219.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="102.5391" x="746.7305" y="249.292">FeatureRoutes</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="87.7461" x="754.127" y="198.9951">«srializable»</text></g><g class="entity" data-entity="FeatureNavGraph" data-source-line="14" data-uid="ent0010" id="entity_FeatureNavGraph"><ellipse cx="962" cy="219.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="124.2568" x="899.8716" y="249.292">FeatureNavGraph</text></g><g class="entity" data-entity="SomeUseCase_1" data-source-line="18" data-uid="ent0013" id="entity_SomeUseCase_1"><ellipse cx="153" cy="659.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116.0264" x="94.9868" y="689.292">SomeUseCase_1</text></g><g class="entity" data-entity="SomeUseCase_2" data-source-line="19" data-uid="ent0014" id="entity_SomeUseCase_2"><ellipse cx="320" cy="659.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116.0264" x="261.9868" y="689.292">SomeUseCase_2</text></g><g class="entity" data-entity="SomeUseCase_3" data-source-line="20" data-uid="ent0015" id="entity_SomeUseCase_3"><ellipse cx="153" cy="808.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="116.0264" x="94.9868" y="838.292">SomeUseCase_3</text></g><g class="entity" data-entity="FeatureModel_1" data-source-line="23" data-uid="ent0017" id="entity_FeatureModel_1"><ellipse cx="505" cy="659.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111.918" x="449.041" y="689.292">FeatureModel_1</text></g><g class="entity" data-entity="FeatureModel_2" data-source-line="24" data-uid="ent0018" id="entity_FeatureModel_2"><ellipse cx="666" cy="659.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="111.918" x="610.041" y="689.292">FeatureModel_2</text></g><g class="entity" data-entity="SomeUseCaseImpl_1" data-source-line="28" data-uid="ent0020" id="entity_SomeUseCaseImpl_1"><ellipse cx="930" cy="808.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146.5693" x="856.7153" y="838.292">SomeUseCaseImpl_1</text></g><g class="entity" data-entity="SomeUseCaseImpl_2" data-source-line="29" data-uid="ent0021" id="entity_SomeUseCaseImpl_2"><ellipse cx="1127" cy="808.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146.5693" x="1053.7153" y="838.292">SomeUseCaseImpl_2</text></g><g class="entity" data-entity="SomeUseCaseImpl_3" data-source-line="30" data-uid="ent0022" id="entity_SomeUseCaseImpl_3"><ellipse cx="930" cy="938.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146.5693" x="856.7153" y="968.292">SomeUseCaseImpl_3</text></g><g class="entity" data-entity="BindModule" data-source-line="33" data-uid="ent0024" id="entity_BindModule"><ellipse cx="1183" cy="219.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82.1611" x="1141.9194" y="249.292">BindModule</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="102.7578" x="1131.6211" y="198.9951">«Module(Hilt)»</text></g><g class="entity" data-entity="domain_core_module" data-source-line="37" data-uid="ent0025" id="entity_domain_core_module"><ellipse cx="1353" cy="938.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="92.4971" x="1306.7515" y="968.292">:domain:core</text></g><g class="entity" data-entity="domain_shared_module" data-source-line="38" data-uid="ent0026" id="entity_domain_shared_module"><ellipse cx="1361" cy="659.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109.8672" x="1306.0664" y="689.292">:domain:shared</text></g><g class="entity" data-entity="core_ui_module" data-source-line="39" data-uid="ent0027" id="entity_core_ui_module"><ellipse cx="1492" cy="659.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="52.8281" x="1465.5859" y="689.292">:core:ui</text></g><g class="entity" data-entity="App" data-source-line="41" data-uid="ent0028" id="entity_App"><ellipse cx="1067" cy="51.2969" fill="#313139" rx="8" ry="8" style="stroke:#E7E7E7;stroke-width:0.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27.3506" x="1053.3247" y="81.292">App</text></g><g class="link" data-entity-1="App" data-entity-2="navigation" data-source-line="41" data-uid="lnk29" id="link_App_navigation"><path d="M1067,59.8569 C1067,67.8494 1067,81.5037 1067,97.5492 C1067,105.572 1067,114.1925 1067,123.0019 C1067,127.4066 1067,131.8586 1067,136.3066 C1067,138.5307 1067,140.7537 1067,142.9694 C1067,144.0773 1067,145.1833 1067,146.2867 C1067,146.5625 1067,163.1351 1067,163.4106" fill="none" id="App-to-navigation" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="1067,169.4106,1071,160.4106,1067,164.4106,1063,160.4106,1067,169.4106" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="navigation" data-entity-2="presentation" data-source-line="42" data-uid="lnk30" id="link_navigation_presentation"><path d="M1075.1013,245.2798 C1075.1918,245.4979 1075.2832,245.7167 1075.3754,245.9361 C1075.7443,246.8136 1076.1266,247.7009 1076.5225,248.5956 C1082.8575,262.9119 1092.69,279.1519 1107,288.2969 C1122.24,298.0369 1174.33,284.4569 1188,296.2969 C1190.7669,298.6938 1193.3144,301.2878 1195.6591,304.0456 C1196.8315,305.4245 1197.9531,306.8444 1199.0262,308.3011 C1199.5627,309.0294 1200.087,309.7669 1200.5995,310.5131 C1200.8557,310.8862 1201.1089,311.2615 1201.3592,311.6389 C1201.4844,311.8276 1198.3322,329.2873 1198.4559,329.4771" fill="none" id="navigation-to-presentation" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="1201.7325,334.5034,1200.1684,324.7795,1199.002,330.3148,1193.4667,329.1483,1201.7325,334.5034" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="SomeViewModel_1" data-entity-2="domain" data-source-line="43" data-uid="lnk31" id="link_SomeViewModel_1_domain"><path d="M798.24,436.2169 C796.335,456.1219 791.16,510.2319 786.395,560.0544 C786.0972,563.1683 785.801,566.2654 785.5073,569.3365 C785.3604,570.872 785.7854,566.4282 785.6399,567.9494" fill="none" id="SomeViewModel_1-to-domain" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="785.0687,573.9222,789.9074,565.3439,785.5447,568.9449,781.9437,564.5822,785.0687,573.9222" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="domain" data-entity-2="data" data-source-line="44" data-uid="lnk33" id="link_domain_data"><path d="M791.4338,660.0948 C791.9273,660.089 787.1659,660.1478 787.6964,660.142 C789.8183,660.1188 792.2338,660.0962 794.923,660.0765 C805.6795,659.9979 820.8138,659.9673 839.0419,660.1445 C875.4981,660.4991 924.33,661.685 975.2675,664.9806 C1077.1425,671.5719 1187.44,686.6019 1224,720.2969 C1227.5813,723.5969 1230.5689,727.402 1233.0548,731.5381 C1233.6763,732.5721 1234.2664,733.6268 1234.8266,734.6994 C1234.9667,734.9676 1235.1049,735.2369 1235.2412,735.5072 C1235.3093,735.6424 1235.3771,758.0747 1235.4443,758.2104" fill="none" id="domain-backto-data" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="785.4343,660.1682,794.4825,664.0579,790.4339,660.1071,794.3847,656.0585,785.4343,660.1682" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="data" data-entity-2="domain_core_module" data-source-line="45" data-uid="lnk34" id="link_data_domain_core_module"><path d="M1251.0458,818.6597 C1251.2439,818.8903 1251.4452,819.1245 1251.6495,819.3623 C1253.2839,821.2645 1255.1146,823.395 1257.1103,825.7175 C1265.0931,835.0075 1275.7163,847.3694 1286.9825,860.4794 C1309.515,886.6994 1330.7095,911.3613 1342.4095,924.9763" fill="none" id="data-to-domain_core_module" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="1346.32,929.5269,1343.4879,920.094,1343.0612,925.7347,1337.4205,925.308,1346.32,929.5269" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="SomeViewModel_1" data-entity-2="domain_shared_module" data-source-line="46" data-uid="lnk35" id="link_SomeViewModel_1_domain_shared_module"><path d="M804.62,436.2769 C817.58,454.0769 851.41,497.2769 890,520.2969 C1057.93,620.4969 1297.3366,651.2848 1346.3366,656.7248" fill="none" id="SomeViewModel_1-to-domain_shared_module" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="1352.3,657.3869,1343.7963,652.4182,1347.3305,656.8352,1342.9136,660.3694,1352.3,657.3869" style="stroke:#E7E7E7;stroke-width:1;"/></g><g class="link" data-entity-1="SomeScreen_1" data-entity-2="core_ui_module" data-source-line="47" data-uid="lnk36" id="link_SomeScreen_1_core_ui_module"><path d="M970.71,436.1469 C980.06,454.8869 1006.61,502.0369 1045,520.2969 C1064.87,529.7469 1422.95,515.7169 1441,528.2969 C1482.97,557.5469 1490.0631,620.9063 1491.3831,644.3763" fill="none" id="SomeScreen_1-to-core_ui_module" style="stroke:#E7E7E7;stroke-width:1;"/><polygon fill="#E7E7E7" points="1491.72,650.3669,1495.2083,641.1565,1491.4392,645.3748,1487.2209,641.6057,1491.72,650.3669" style="stroke:#E7E7E7;stroke-width:1;"/></g></g></svg></div></div>
+
+<h4 id="navigation-module">Navigation module</h4>
+<p>The navigation routes are keeping in this module.</p>
+<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">sealed</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nc">Feature1Routes</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="nd">@Serializable</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kd">data</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">Feature1Screen1</span><span class="p">(</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="kd">val</span><span class="w"> </span><span class="nv">somePieceOfData</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">,</span><span class="w"> </span><span class="c1">//if needed</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Feature1Routes</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nd">@Serializable</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="kd">data</span><span class="w"> </span><span class="kd">object</span><span class="w"> </span><span class="nc">Feature1Screen2</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Feature1Routes</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">}</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="kd">sealed</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nc">Feature2Routes</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nd">@Serializable</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="kd">data</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">Feature2Screen1</span><span class="p">(</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="kd">val</span><span class="w"> </span><span class="nv">somePieceOfData</span><span class="p">:</span><span class="w"> </span><span class="kt">Int</span><span class="p">,</span><span class="w"> </span><span class="c1">//if needed</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Feature2Routes</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="nd">@Serializable</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="kd">data</span><span class="w"> </span><span class="kd">object</span><span class="w"> </span><span class="nc">Feature2Screen2</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">Feature2Routes</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="p">}</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="c1">//etc</span>
+</span></code></pre></div>
+<h4 id="feature-module">Feature module</h4>
+<p>Depends on:</p>
+<ul>
+<li>:core:ui - common UI components</li>
+<li>:domain:core - models and repositories</li>
+<li>:domain:shared - common UseCases</li>
+<li>:navigation - navigation routes</li>
+</ul>
+<p>Packages:</p>
+<ul>
+<li><strong>navigation</strong> - Here are part of navigation graph. The only module that has <code>public</code> modifier.
+<em>Other have <code>internal</code>.</em></li>
+<li>other are the same of <a href="../android-ca-independent-features/#feature-module">previous example</a></li>
+</ul>
+<p>So, we have an opportunity to navigate to another feature directly from feature screen.</p>
+<p><div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@Composable</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">internal</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">SomeScreen</span><span class="p">(</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">navController</span><span class="p">:</span><span class="w"> </span><span class="n">NavHostController</span><span class="p">,</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="n">viewModel</span><span class="p">:</span><span class="w"> </span><span class="n">SomeViewModel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hiltViewModel</span><span class="p">()</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="n">SomeComposableFun</span><span class="p">(</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="n">onClick</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">            </span><span class="n">navController</span><span class="p">.</span><span class="na">navigate</span><span class="p">(</span><span class="n">Feature2Routes</span><span class="p">.</span><span class="na">Feature2Screen2</span><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="p">)</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">}</span>
+</span></code></pre></div>
+OK, OK... I know what you'll say. <strong>It's a bullshit! Where's you "Clean" Architecture? High coupling, cross dependencies and so on...</strong></p>
+<p>Guys, I've known about it. And I agree with you. But it's better than you'll have something like this:
+<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nd">@Composable</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">internal</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">SomeScreen</span><span class="p">(</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="n">navigateBack</span><span class="p">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Unit</span><span class="p">,</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="n">navigateToScreen1</span><span class="p">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Unit</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="n">navigateToScreen2</span><span class="p">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Unit</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="n">navigateToScreen3</span><span class="p">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Unit</span><span class="p">,</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="c1">//etc</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="n">viewModel</span><span class="p">:</span><span class="w"> </span><span class="n">SomeViewModel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hiltViewModel</span><span class="p">()</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">    </span><span class="c1">//some code</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<h3 id="presummary">PreSummary</h3>
+<p>So, It was a directly pragmatic approach. And it works...</p>
+<p><em>Okay, let's try to make some better solution</em></p>
+<h3 id="more-cleaner-solution">More cleaner solution</h3>
+<p>We can do some contract for navigation in <code>:navigation</code> module, such as:
+<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">interface</span><span class="w"> </span><span class="nc">Feature1Navigator</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">navigateToFeature2Screen1</span><span class="p">()</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">navigateToFeature2Screen2</span><span class="p">()</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">navigateToBack</span><span class="p">()</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<p>And inject it into ViewModel:
+<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nd">@HiltViewModel</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kd">internal</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">SomeViewModel</span><span class="w"> </span><span class="nd">@Inject</span><span class="w"> </span><span class="k">constructor</span><span class="p">(</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">navigator</span><span class="p">:</span><span class="w"> </span><span class="n">Feature1Navigator</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ViewModel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">navEvent</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">        </span><span class="n">navigator</span><span class="p">.</span><span class="na">navigateToFeature2Screen2</span><span class="p">()</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<p>The implementation can be placed in <code>:navigation</code> module or you can create a difference <code>:navigation:impl</code> for lesser coupling.</p>
+<h3 id="summary">Summary</h3>
+<p>So, there was 2 solutions:</p>
+<ul>
+<li>dirty but directly</li>
+<li>clear with DIP</li>
+</ul>
+<hr />
+<p><em>I think I have to repeat the bottom part of article.</em></p>
+<p>In text above was certain example with certain requirements, and that solution can not be applied for another type of project. <strong>Do not copy without thinking.</strong></p>
+<p><em>Thanks for reading!</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Content is licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. Code snippets are under <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">MIT License</a>.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.indexes", "content.code.copy", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      
+        <script src="../../../assets/mkdocs_puml/puml.js"></script>
+      
+        <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
+      
+        <script src="../../../assets/mkdocs_puml/interaction.js"></script>
+      
+    
+  </body>
+</html>
