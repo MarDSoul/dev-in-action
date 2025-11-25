@@ -1,0 +1,63 @@
+site_name: Dev In Action
+site_url: https://mardsoul.github.io/dev-in-action/
+site_description: Technical insights and practical guides across Android development.
+
+copyright: 'Content is licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. Code snippets are under <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener">MIT License</a>.'
+
+theme:
+  favicon: assets/images/favicon.png
+  logo: assets/images/logo.svg
+  name: material
+  language: en
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      primary: black
+      scheme: default
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      primary: black
+      scheme: slate
+      toggle:
+        icon: material/brightness-4 
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.indexes
+    - content.code.copy
+    - toc.integrate
+    
+use_directory_urls: true
+
+nav:
+    - Home/Profile: index.md
+    - Articles:
+        - Overview:  articles/index.md
+        - Android Clean Architecture in Action:
+            - Intro (Part 1). Example with independent features: articles/arch-principles/android-ca-independent-features.md
+            - Going ahead (Part 2). Example with complex navigation: articles/arch-principles/android-ca-complex-navigation.md
+        - Using MockK library in Jetpack Compose Preview: articles/using-mockk-preview.md
+        - Simple example of reverse .apk: articles/reverse-basic-example.md
+        - Sharing data between ViewModels: articles/sharing-data-between-viewmodels.md
+
+markdown_extensions:
+    - pymdownx.emoji:
+        emoji_index: !!python/name:material.extensions.emoji.twemoji
+        emoji_generator: !!python/name:material.extensions.emoji.to_svg
+    - pymdownx.highlight:
+        anchor_linenums: true
+        line_spans: __span
+        pygments_lang_class: true
+        auto_title: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences
+    - admonition
+    - attr_list
+    - meta
+
+plugins:
+    - redirects
+    - plantuml:
+        puml_url: https://www.plantuml.com/plantuml/
