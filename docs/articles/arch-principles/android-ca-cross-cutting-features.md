@@ -1,4 +1,5 @@
 # More about Clean Architecture in Android. Example with cross-cutting features.
+**Date of publication:** 04 Dec 2025
 
 *Okay, here's the next part.*
 
