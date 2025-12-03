@@ -799,6 +799,7 @@
 
 
 <h1 id="more-about-clean-architecture-in-android-example-with-cross-cutting-features">More about Clean Architecture in Android. Example with cross-cutting features.</h1>
+<p><strong>Date of publication:</strong> 04 Dec 2025</p>
 <p><em>Okay, here's the next part.</em></p>
 <p>And now I gonna talk about features that cross though the whole app such as: exceptions, dialogs, global events etc. I mean features whose behavior depends on others.The main concept is making some <a href="https://en.wikipedia.org/wiki/Single_source_of_truth">SSOT</a> for global events and subscribe to it in the main module. And the <a href="https://kotlinlang.org/docs/flow.html">Flows</a> will help us for that goal.</p>
 <p>For this purpose I'll use <a href="https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-shared-flow/">SharedFlow</a>. It was especially created for this kind of cases.</p>
