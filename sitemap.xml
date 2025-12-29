@@ -2,38 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://mardsoul.github.io/dev-in-action/</loc>
-         <lastmod>2025-12-03</lastmod>
+         <lastmod>2025-12-29</lastmod>
     </url>
     <url>
          <loc>https://mardsoul.github.io/dev-in-action/articles/</loc>
-         <lastmod>2025-12-03</lastmod>
+         <lastmod>2025-12-29</lastmod>
     </url>
     <url>
          <loc>https://mardsoul.github.io/dev-in-action/articles/compose-custom-typography-system/</loc>
-         <lastmod>2025-12-03</lastmod>
+         <lastmod>2025-12-29</lastmod>
     </url>
     <url>
          <loc>https://mardsoul.github.io/dev-in-action/articles/reverse-basic-example/</loc>
-         <lastmod>2025-12-03</lastmod>
+         <lastmod>2025-12-29</lastmod>
     </url>
     <url>
          <loc>https://mardsoul.github.io/dev-in-action/articles/sharing-data-between-viewmodels/</loc>
-         <lastmod>2025-12-03</lastmod>
+         <lastmod>2025-12-29</lastmod>
+    </url>
+    <url>
+         <loc>https://mardsoul.github.io/dev-in-action/articles/unity-ar-integration-compose/</loc>
+         <lastmod>2025-12-29</lastmod>
     </url>
     <url>
          <loc>https://mardsoul.github.io/dev-in-action/articles/using-mockk-preview/</loc>
-         <lastmod>2025-12-03</lastmod>
+         <lastmod>2025-12-29</lastmod>
     </url>
     <url>
          <loc>https://mardsoul.github.io/dev-in-action/articles/arch-principles/android-ca-complex-navigation/</loc>
-         <lastmod>2025-12-03</lastmod>
+         <lastmod>2025-12-29</lastmod>
     </url>
     <url>
          <loc>https://mardsoul.github.io/dev-in-action/articles/arch-principles/android-ca-cross-cutting-features/</loc>
-         <lastmod>2025-12-03</lastmod>
+         <lastmod>2025-12-29</lastmod>
     </url>
     <url>
          <loc>https://mardsoul.github.io/dev-in-action/articles/arch-principles/android-ca-independent-features/</loc>
-         <lastmod>2025-12-03</lastmod>
+         <lastmod>2025-12-29</lastmod>
     </url>
 </urlset>
