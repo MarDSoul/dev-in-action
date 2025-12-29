@@ -19,7 +19,7 @@ Sounds funny :) But really... first of all we wanna find some library for the is
 
 ### The specific of Unity lifecycle
 
-We're all already used to it that an Activity has its lifecycle. The Unity also has its lifecycle. But their cycles a little bit different. For instance, you will be laughing but Unity send `SIGKILL` to process when its call `onDestroy()` function.
+We're all already used to it that an Activity has its lifecycle. The Unity also has its lifecycle. But their cycles a little bit different. For instance, you will be laughing but Unity send `SIGTERM` to process when its call `onDestroy()` function.
 
 ## Suggested solution
 
@@ -282,7 +282,7 @@ internal fun SomeScreen(
 
 Also you may have problems with Hardware Acceleration, you can set it manually if need `android:hardwareAccelerated="true"` 
 
-Don't forget setup a another process to Activity if you wanna upload engine out of memory. **This isolates `SIGKILL` from your main process**
+Don't forget setup a another process to Activity if you wanna upload engine out of memory. **This isolates `SIGTERM` from your main process**
 
 ```kotlin
 // some code
