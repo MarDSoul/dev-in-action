@@ -848,7 +848,7 @@
 <h3 id="no-ready-made-solution">No ready-made solution</h3>
 <p>Sounds funny :) But really... first of all we wanna find some library for the issue. And we can find <a href="https://unity.com/features/unity-as-a-library">Unity as a Library</a>. And it works... sometimes. <em>I coldn't start this lybrary correctly. Maybe the reason was in lib version, maybe Unity version, maybe third-part AR library.</em> Anyway it's solution for implementing AR but by an hard copuling Activity with Unity engine.</p>
 <h3 id="the-specific-of-unity-lifecycle">The specific of Unity lifecycle</h3>
-<p>We're all already used to it that an Activity has its lifecycle. The Unity also has its lifecycle. But their cycles a little bit different. For instance, you will be laughing but Unity send <code>SIGKILL</code> to process when its call <code>onDestroy()</code> function.</p>
+<p>We're all already used to it that an Activity has its lifecycle. The Unity also has its lifecycle. But their cycles a little bit different. For instance, you will be laughing but Unity send <code>SIGTERM</code> to process when its call <code>onDestroy()</code> function.</p>
 <h2 id="suggested-solution">Suggested solution</h2>
 <h3 id="the-core-of-solution">The core of solution</h3>
 <p>The main idea - <strong>rewrite the lifecycle of Unity engine</strong>. The key class - <code>UnityPlayerForActivityOrService</code>. This class is from Unity when you import the project to Android <code>aar</code> library.</p>
@@ -1090,7 +1090,7 @@
 </span></code></pre></div>
 <h3 id="activity">Activity</h3>
 <p>Also you may have problems with Hardware Acceleration, you can set it manually if need <code>android:hardwareAccelerated="true"</code> </p>
-<p>Don't forget setup a another process to Activity if you wanna upload engine out of memory. <strong>This isolates <code>SIGKILL</code> from your main process</strong></p>
+<p>Don't forget setup a another process to Activity if you wanna upload engine out of memory. <strong>This isolates <code>SIGTERM</code> from your main process</strong></p>
 <div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// some code</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="o">&lt;</span><span class="n">application</span><span class="o">&gt;</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="o">&lt;</span><span class="n">activity</span>
