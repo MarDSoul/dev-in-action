@@ -5,6 +5,7 @@
     - [Going ahead with Clean Architecture in Android. Example with complex navigation.](./arch-principles/android-ca-complex-navigation.md) A compromise solution for complex navigation.
     - [More about Clean Architecture in Android. Example with cross-cutting features.](./arch-principles/android-ca-cross-cutting-features.md) An example with getting global events from features.
 - **Non-series**
+    - [Hilt for beginners.](./hilt-for-beginners.md) Practical guide of using Hilt DI.
     - [Integration Unity AR to Compose.](./unity-ar-integration-compose.md) Quick-and-dirty wrapper that lets you drop Unity AR into your app as a standard Composable function.
     - [Implementing Chaos-Proof Custom Typography in Compose.](./compose-custom-typography-system.md) How to integrate a system of typography into UI.
     - [Using MockK library in Jetpack Compose Preview.](./using-mockk-preview.md) A trick for running the preview with complex objects in constructors.
