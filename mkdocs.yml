@@ -44,6 +44,9 @@ nav:
         - Using MockK library in Jetpack Compose Preview: articles/using-mockk-preview.md
         - Simple example of reverse .apk: articles/reverse-basic-example.md
         - Sharing data between ViewModels: articles/sharing-data-between-viewmodels.md
+    - Notes:
+        - Overview: notes/index.md
+        - Flexible Enums via Inline classes: notes/flexible-enums-inline-class.md
 
 markdown_extensions:
     - pymdownx.emoji:
