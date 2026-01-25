@@ -46,6 +46,7 @@ nav:
         - Sharing data between ViewModels: articles/sharing-data-between-viewmodels.md
     - Notes:
         - Overview: notes/index.md
+        - Coroutines Auto-cancel pattern: notes/coroutines-auto-cancel-pattern.md
         - Flexible Enums via Inline classes: notes/flexible-enums-inline-class.md
 
 markdown_extensions:
