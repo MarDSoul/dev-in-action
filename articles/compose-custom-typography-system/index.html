@@ -323,6 +323,8 @@
       
         
       
+        
+      
     
     
     
@@ -523,6 +525,34 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coil-coroutines-payment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Save money on image loading with Coil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1005,13 +1035,13 @@
 
 
 
-<h1 id="implementing-chaos-proof-custom-typography-in-compose">Implementing Chaos-Proof Custom Typography in Compose</h1>
+<div><h1 id="implementing-chaos-proof-custom-typography-in-compose">Implementing Chaos-Proof Custom Typography in Compose</h1>
 <p><strong>Date of publication:</strong> 26 Nov 2025</p>
 <h2 id="problem-case">Problem case</h2>
 <p>Recently I met a case when the typography system in design was so terrible that I spent lots of time with tries to make it into some more beautiful code. What was in that case? - Many different font weghts and sizes.</p>
 <p>You may ask: "And so what?" - There were simply too many, such as on one screen a title can be with size 60px and font weight SemiBold, on another - size 54px and font weght Medium. And lots of them... The font list was impossble to be grouped into the Material Design typography system (you know, DisplayLarge, DisplayMedium and so on).</p>
 <p><em>Earlier I wanna named this article like a "How to be if your designer is an ass-hole" but it have been incorrectly because in generally I meet professionals. It was an exception case.</em></p>
-<hr />
+<hr>
 <h2 id="local-solution">Local solution</h2>
 <h3 id="on-site-definition">On-site definition</h3>
 <p>Let's define text style in place.</p>
@@ -1027,7 +1057,7 @@
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="n">Text</span><span class="p">(</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">        </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;some text&quot;</span><span class="p">,</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">        </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"some text"</span><span class="p">,</span>
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">textStyle</span>
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
@@ -1174,7 +1204,7 @@ It's quite a neat approach. And in case you have different fonts mostly strongly
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1">//some code</span>
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="n">Text</span><span class="p">(</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">        </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;some text&quot;</span><span class="p">,</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">        </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"some text"</span><span class="p">,</span>
 </span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">        </span><span class="n">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AppTheme</span><span class="p">.</span><span class="na">typo</span><span class="p">.</span><span class="na">screen1</span><span class="p">.</span><span class="na">tableContent</span>
 </span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
@@ -1213,8 +1243,8 @@ It's quite a neat approach. And in case you have different fonts mostly strongly
 </ul>
 <p><strong>Summary:</strong>
 So, this solution is for cases like mine. If there are so many styles that it can't be grouped to standard typography.</p>
-<hr />
-<p><em>Thanks for reading. I wish you good designers!</em> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M464 256a208 208 0 1 0-416 0 208 208 0 1 0 416 0M0 256a256 256 0 1 1 512 0 256 256 0 1 1-512 0m177.3 63.4c15 15.6 41.1 32.6 78.7 32.6s63.7-17 78.7-32.6c9.2-9.6 24.4-9.9 33.9-.7s9.9 24.4.7 33.9c-22.1 23-60 47.4-113.3 47.4s-91.2-24.4-113.3-47.4c-9.2-9.6-8.9-24.8.7-33.9s24.8-8.9 33.9.7M144 208a32 32 0 1 1 64 0 32 32 0 1 1-64 0m192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64"/></svg></span></p>
+<hr>
+<p><em>Thanks for reading. I wish you good designers!</em> <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M464 256a208 208 0 1 0-416 0 208 208 0 1 0 416 0M0 256a256 256 0 1 1 512 0 256 256 0 1 1-512 0m177.3 63.4c15 15.6 41.1 32.6 78.7 32.6s63.7-17 78.7-32.6c9.2-9.6 24.4-9.9 33.9-.7s9.9 24.4.7 33.9c-22.1 23-60 47.4-113.3 47.4s-91.2-24.4-113.3-47.4c-9.2-9.6-8.9-24.8.7-33.9s24.8-8.9 33.9.7M144 208a32 32 0 1 1 64 0 32 32 0 1 1-64 0m192-32a32 32 0 1 1 0 64 32 32 0 1 1 0-64"></path></svg></span></p></div>
 
 
 

@@ -13,7 +13,7 @@
         <link rel="canonical" href="https://mardsoul.github.io/dev-in-action/articles/hilt-for-beginners/">
       
       
-        <link rel="prev" href="../arch-principles/android-ca-cross-cutting-features/">
+        <link rel="prev" href="../coil-coroutines-payment/">
       
       
         <link rel="next" href="../unity-ar-integration-compose/">
@@ -323,6 +323,8 @@
       
         
       
+        
+      
     
     
     
@@ -523,6 +525,34 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coil-coroutines-payment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Save money on image loading with Coil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1082,7 +1112,7 @@
 
 
 
-<h1 id="using-hilt-guide-for-beginners">Using Hilt (guide for beginners)</h1>
+<div><h1 id="using-hilt-guide-for-beginners">Using Hilt (guide for beginners)</h1>
 <p><strong>Date of publication:</strong> 07 Jan 2026</p>
 <h2 id="intro">Intro</h2>
 <p>This article was born as an answer for question I got:</p>
@@ -1108,18 +1138,18 @@
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">someFun</span><span class="p">()</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="p">}</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1">//you can define the scope of class right there, but it&#39;s not useful</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1">//you can define the scope of class right there, but it's not useful</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kd">class</span><span class="w"> </span><span class="nc">SomeRepoImpl</span><span class="w"> </span><span class="nd">@Inject</span><span class="w"> </span><span class="k">constructor</span><span class="p">(</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">someDep</span><span class="p">:</span><span class="w"> </span><span class="n">SomeDep</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="c1">//other deps</span>
 </span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">SomeRepo</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="kd">override</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">someFun</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="c1">//fun&#39;s body</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="c1">//fun's body</span>
 </span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="p">}</span>
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="nd">@Module</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="nd">@InstallIn</span><span class="p">(</span><span class="n">SingletonComponent</span><span class="o">::</span><span class="n">class</span><span class="p">)</span><span class="w"> </span><span class="c1">//module&#39;s scope</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="nd">@InstallIn</span><span class="p">(</span><span class="n">SingletonComponent</span><span class="o">::</span><span class="n">class</span><span class="p">)</span><span class="w"> </span><span class="c1">//module's scope</span>
 </span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="kd">abstract</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">RepoBindModule</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//must be interface or abstract class</span>
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="nd">@Binds</span>
 </span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="nd">@Singleton</span><span class="w"> </span><span class="c1">//class scope</span>
@@ -1128,7 +1158,7 @@
 </span></code></pre></div>
 <p><code>@Provides</code> is for using when you have custom initialization logic. For example:</p>
 <div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@Module</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nd">@InstallIn</span><span class="p">(</span><span class="n">SingletonComponent</span><span class="o">::</span><span class="n">class</span><span class="p">)</span><span class="w"> </span><span class="c1">//module&#39;s scope</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nd">@InstallIn</span><span class="p">(</span><span class="n">SingletonComponent</span><span class="o">::</span><span class="n">class</span><span class="p">)</span><span class="w"> </span><span class="c1">//module's scope</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kd">object</span><span class="w"> </span><span class="nc">SomeProvideModule</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">//must be class, not abstract</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nd">@Provides</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nd">@Singleton</span><span class="w"> </span><span class="c1">//class scope</span>
@@ -1237,7 +1267,7 @@
 <div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nd">@Module</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nd">@InstallIn</span><span class="p">(</span><span class="n">SingletonComponent</span><span class="o">::</span><span class="n">class</span><span class="p">)</span>
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="kd">object</span><span class="w"> </span><span class="nc">DataStoreModule</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">DATASTORE_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;filename.pb&quot;</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">DATASTORE_FILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"filename.pb"</span>
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nd">@Singleton</span>
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="nd">@Provides</span>
@@ -1345,8 +1375,8 @@
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="n">replaces</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="n">DataStoreModule</span><span class="o">::</span><span class="n">class</span><span class="o">]</span><span class="p">,</span>
 </span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="p">)</span>
 </span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="kd">object</span><span class="w"> </span><span class="nc">TestDataStoreModule</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">TEST_FILE_NAME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;test_filename&quot;</span>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">PREFIX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;.pb&quot;</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">TEST_FILE_NAME</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"test_filename"</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">PREFIX</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">".pb"</span>
 </span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
 </span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">    </span><span class="nd">@Provides</span>
 </span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">    </span><span class="nd">@Singleton</span>
@@ -1453,7 +1483,7 @@
 <p><strong>History:</strong> a long-long time ago (before Hilt 2.31) the delivering some <em>id</em> into <code>ViewModel</code> was not so simple like now with <code>hiltViewModel()</code></p>
 <h2 id="bonus">Bonus</h2>
 <p>Usually I use these templates for injecting dispatchers and scope in some classes where I need in.</p>
-<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nd">@Suppress</span><span class="p">(</span><span class="s">&quot;UNUSED&quot;</span><span class="p">)</span>
+<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nd">@Suppress</span><span class="p">(</span><span class="s">"UNUSED"</span><span class="p">)</span>
 </span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nd">@Module</span>
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nd">@InstallIn</span><span class="p">(</span><span class="n">SingletonComponent</span><span class="o">::</span><span class="n">class</span><span class="p">)</span>
 </span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="kd">object</span><span class="w"> </span><span class="nc">CoroutinesDispatchersModule</span><span class="w"> </span><span class="p">{</span>
@@ -1483,7 +1513,7 @@
 </span><span id="__span-14-28"><a id="__codelineno-14-28" name="__codelineno-14-28" href="#__codelineno-14-28"></a><span class="nd">@Qualifier</span>
 </span><span id="__span-14-29"><a id="__codelineno-14-29" name="__codelineno-14-29" href="#__codelineno-14-29"></a><span class="kd">annotation</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">MainDispatcher</span>
 </span></code></pre></div>
-<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nd">@Suppress</span><span class="p">(</span><span class="s">&quot;UNUSED&quot;</span><span class="p">)</span>
+<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nd">@Suppress</span><span class="p">(</span><span class="s">"UNUSED"</span><span class="p">)</span>
 </span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="nd">@Module</span>
 </span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="nd">@InstallIn</span><span class="p">(</span><span class="n">SingletonComponent</span><span class="o">::</span><span class="n">class</span><span class="p">)</span>
 </span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="kd">object</span><span class="w"> </span><span class="nc">ScopeModule</span><span class="w"> </span><span class="p">{</span>
@@ -1500,8 +1530,8 @@
 </span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="nd">@Qualifier</span>
 </span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="kd">annotation</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">ApplicationScope</span>
 </span></code></pre></div>
-<hr />
-<p><em>Thanks for reading! I hope it was useful for you!</em></p>
+<hr>
+<p><em>Thanks for reading! I hope it was useful for you!</em></p></div>
 
 
 

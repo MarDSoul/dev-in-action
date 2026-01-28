@@ -323,6 +323,8 @@
       
         
       
+        
+      
     
     
     
@@ -523,6 +525,34 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coil-coroutines-payment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Save money on image loading with Coil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1021,13 +1051,13 @@
 
 
 
-<h1 id="integration-unity-ar-to-compose">Integration Unity AR to Compose</h1>
+<div><h1 id="integration-unity-ar-to-compose">Integration Unity AR to Compose</h1>
 <p><strong>Date of publication:</strong> 29 Dec 2025</p>
 <p>Okay, today I gonna talk about a such specific task as integration Unity library with AR functionality into Android application. Here I'll write about obstacles you can meet and solution I suggest.</p>
 <p>Unity is engine that trying to completely replace the process of application. And the traditional way for implementing Unity is creation UnityPlayerActivity (or UnityGamePlayerActivity) which is creating by Unity IDE.</p>
 <p>By default we can't rule this. And the main task in this article - <strong>setup Unity as a simple composable function</strong>.</p>
 <p><em>Let's go</em></p>
-<hr />
+<hr>
 <h2 id="problems">Problems</h2>
 <h3 id="no-ready-made-solution">No ready-made solution</h3>
 <p>Sounds funny :) But really... first of all we wanna find some library for the issue. And we can find <a href="https://unity.com/features/unity-as-a-library">Unity as a Library</a>. And it works... sometimes. <em>I coldn't start this lybrary correctly. Maybe the reason was in lib version, maybe Unity version, maybe third-part AR library.</em> Anyway it's solution for implementing AR but by an hard copuling Activity with Unity engine.</p>
@@ -1040,7 +1070,7 @@
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cm"> * Manages the UnityPlayer instance and its lifecycle.</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="cm"> *</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="cm"> * This object is responsible for creating, initializing, and destroying the UnityPlayer instance.</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="cm"> * It also handles the UnityPlayer&#39;s lifecycle events by observing the lifecycle of the attached</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="cm"> * It also handles the UnityPlayer's lifecycle events by observing the lifecycle of the attached</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="cm"> * activity.</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="cm"> */</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="kd">object</span><span class="w"> </span><span class="nc">UnityPlayerManager</span><span class="w"> </span><span class="p">{</span>
@@ -1052,7 +1082,7 @@
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="cm">     * Observes the lifecycle of the attached activity and calls the corresponding UnityPlayer</span>
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="cm">     * lifecycle methods.</span>
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="cm">     *</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="cm">     * This observer ensures that the UnityPlayer&#39;s lifecycle is synchronized with the activity&#39;s</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="cm">     * This observer ensures that the UnityPlayer's lifecycle is synchronized with the activity's</span>
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="cm">     * lifecycle.</span>
 </span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="cm">     */</span>
 </span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nv">lifecycleEventObserver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LifecycleEventObserver</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="w"> </span><span class="o">-&gt;</span>
@@ -1167,7 +1197,7 @@
 </span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">    </span><span class="p">)</span>
 </span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>
 </span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">    </span><span class="c1">// have to be defined by name in Unity script</span>
-</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">    </span><span class="nd">@Suppress</span><span class="p">(</span><span class="s">&quot;UNUSED&quot;</span><span class="p">)</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">    </span><span class="nd">@Suppress</span><span class="p">(</span><span class="s">"UNUSED"</span><span class="p">)</span>
 </span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">    </span><span class="nd">@JvmStatic</span>
 </span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">    </span><span class="kd">fun</span><span class="w"> </span><span class="nf">receiveMessageFromUnity</span><span class="p">(</span><span class="n">message</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">        </span><span class="n">msgSender</span><span class="o">?.</span><span class="na">invoke</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
@@ -1224,7 +1254,7 @@
 </span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29" href="#__codelineno-2-29"></a><span class="w">                </span><span class="n">unityPlayer</span><span class="p">.</span><span class="na">windowFocusChanged</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span>
 </span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30" href="#__codelineno-2-30"></a><span class="w">                </span><span class="n">unityPlayer</span><span class="p">.</span><span class="na">onPause</span><span class="p">()</span>
 </span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31" href="#__codelineno-2-31"></a><span class="c1">//              unityPlayer.onStop()</span>
-</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="c1">//              Unity don&#39;t stop itself, it&#39;s kill process of application</span>
+</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32" href="#__codelineno-2-32"></a><span class="c1">//              Unity don't stop itself, it's kill process of application</span>
 </span><span id="__span-2-33"><a id="__codelineno-2-33" name="__codelineno-2-33" href="#__codelineno-2-33"></a><span class="w">            </span><span class="p">}</span>
 </span><span id="__span-2-34"><a id="__codelineno-2-34" name="__codelineno-2-34" href="#__codelineno-2-34"></a><span class="w">        </span><span class="p">)</span>
 </span><span id="__span-2-35"><a id="__codelineno-2-35" name="__codelineno-2-35" href="#__codelineno-2-35"></a>
@@ -1265,7 +1295,7 @@
 </span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="w">        </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-3-30"><a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>
 </span><span id="__span-3-31"><a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="w">            </span><span class="n">Button</span><span class="p">(</span><span class="n">onClick</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">showUnity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="w">                </span><span class="n">Text</span><span class="p">(</span><span class="s">&quot;Start Unity&quot;</span><span class="p">)</span>
+</span><span id="__span-3-32"><a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="w">                </span><span class="n">Text</span><span class="p">(</span><span class="s">"Start Unity"</span><span class="p">)</span>
 </span><span id="__span-3-33"><a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="w">            </span><span class="p">}</span>
 </span><span id="__span-3-34"><a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>
 </span><span id="__span-3-35"><a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="w">        </span><span class="p">}</span>
@@ -1279,8 +1309,8 @@
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="o">&lt;</span><span class="n">application</span><span class="o">&gt;</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="o">&lt;</span><span class="n">activity</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">        </span><span class="c1">// some params</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">        </span><span class="n">android</span><span class="p">:</span><span class="n">configChanges</span><span class="o">=</span><span class="s">&quot;mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density&quot;</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">        </span><span class="n">android</span><span class="p">:</span><span class="n">process</span><span class="o">=</span><span class="s">&quot;:unity_process&quot;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">        </span><span class="n">android</span><span class="p">:</span><span class="n">configChanges</span><span class="o">=</span><span class="s">"mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">        </span><span class="n">android</span><span class="p">:</span><span class="n">process</span><span class="o">=</span><span class="s">":unity_process"</span>
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">        </span><span class="c1">// some params</span>
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="c1">// some code</span>
 </span></code></pre></div>
@@ -1306,8 +1336,8 @@
 <li>The Unity can be destroyed if we need. It will kill our process but not the whole application <em>(if you setup manifest of course)</em>. </li>
 </ol>
 <p><strong>Note:</strong> I removed parts of code snippets under the NDA, so, the communication between processes via IPC by Intents, Services etc.</p>
-<hr />
-<p><em>P.S. I spent about 8 hours with a Unity developer with non-stop coding for create this solution. I hope it will help you if you have to struggle with the same problem. Kind regards!</em></p>
+<hr>
+<p><em>P.S. I spent about 8 hours with a Unity developer with non-stop coding for create this solution. I hope it will help you if you have to struggle with the same problem. Kind regards!</em></p></div>
 
 
 

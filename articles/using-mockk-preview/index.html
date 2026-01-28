@@ -323,6 +323,8 @@
       
         
       
+        
+      
     
     
     
@@ -523,6 +525,34 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coil-coroutines-payment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Save money on image loading with Coil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -932,22 +962,22 @@
 
 
 
-<h1 id="using-mockk-library-in-jetpack-compose-preview">Using MockK library in Jetpack Compose Preview</h1>
+<div><h1 id="using-mockk-library-in-jetpack-compose-preview">Using MockK library in Jetpack Compose Preview</h1>
 <p><strong>Date of publication:</strong> 02 Nov 2025</p>
 <h2 id="starting">Starting</h2>
 <p>What is Preview? It's a functionality that gives your an opportunity for view a composable UI during development without the need to build and run on an emulator. <em>(If you use the Android Studio obviously)</em></p>
 <h2 id="problem">Problem</h2>
 <p>In fact you must have a some data that you wanna see in preview. But sometimes it's impossible.</p>
 <p>Imagine, you have a screen like this:
-<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@Composable</span>
+</p><div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@Composable</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">SomeScreen</span><span class="p">(</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="n">viewModel</span><span class="p">:</span><span class="w"> </span><span class="n">SomeViewModel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hiltViewModel</span><span class="p">(),</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">){</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="c1">//some UI</span>
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">}</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>And view model of that screen like this:
-<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@HiltViewModel</span>
+</p><div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@HiltViewModel</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">class</span><span class="w"> </span><span class="nc">SomeViewModel</span><span class="w"> </span><span class="nd">@Inject</span><span class="w"> </span><span class="k">constructor</span><span class="p">(</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">someUseCase1</span><span class="p">:</span><span class="w"> </span><span class="n">someUseCase1</span><span class="p">,</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">someUseCase2</span><span class="p">:</span><span class="w"> </span><span class="n">someUseCase2</span>
@@ -963,23 +993,23 @@
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
 </span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="c1">//etc</span>
 </span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="p">}</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>And that's all. How can you make a preview? - Directly, no how.</p>
 <h2 id="solution">Solution</h2>
 <p>Use <a href="https://mockk.io/">MockK</a> library. It's an open-source and excellent library for <strong>testing</strong>. Okay, it's for testing... But why can't we use it for debugging and preview? - Of course, we can!</p>
 <p>First of all we have to add dependencies
-<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">//Compose</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">implementation</span><span class="p">(</span><span class="n">platform</span><span class="p">(</span><span class="s">&quot;androidx.compose:compose-bom:&lt;bom-version&gt;&quot;</span><span class="p">))</span>
+</p><div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">//Compose</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">implementation</span><span class="p">(</span><span class="n">platform</span><span class="p">(</span><span class="s">"androidx.compose:compose-bom:&lt;bom-version&gt;"</span><span class="p">))</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1">//other compose dependencies</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1">//Preview</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">debugImplementation</span><span class="p">(</span><span class="s">&quot;androidx.compose.ui:ui-tooling&quot;</span><span class="p">)</span>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">debugImplementation</span><span class="p">(</span><span class="s">&quot;androidx.compose.ui:ui-tooling-preview&quot;</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">debugImplementation</span><span class="p">(</span><span class="s">"androidx.compose.ui:ui-tooling"</span><span class="p">)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">debugImplementation</span><span class="p">(</span><span class="s">"androidx.compose.ui:ui-tooling-preview"</span><span class="p">)</span>
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="c1">//MockK</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="n">debugImplementation</span><span class="p">(</span><span class="s">&quot;io.mockk:mockk:&lt;mockk-version&gt;&quot;</span><span class="p">)</span>
-</span></code></pre></div></p>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="n">debugImplementation</span><span class="p">(</span><span class="s">"io.mockk:mockk:&lt;mockk-version&gt;"</span><span class="p">)</span>
+</span></code></pre></div>
 <p>Here's our project structure
-<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>└── src/
+</p><div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>└── src/
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    ├── main/
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    │   └── kotlin/
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    │       └── yourpackage/
@@ -992,9 +1022,9 @@
 </span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>                └── preview/
 </span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>                      ├── SomeScreenPreview.kt
 </span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>                      └── MockEntities.kt
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>We have to add a mock ViewModel by <a href="https://mockk.io/">MockK</a> library and setup it's behavior:
-<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">internal</span><span class="w"> </span><span class="kd">object</span><span class="w"> </span><span class="nc">MockEntities</span><span class="w"> </span><span class="p">{</span>
+</p><div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">internal</span><span class="w"> </span><span class="kd">object</span><span class="w"> </span><span class="nc">MockEntities</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">mockData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">listOf</span><span class="p">(</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">        </span><span class="n">SomeDataItem</span><span class="p">(</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="p">),</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">        </span><span class="n">SomeDataItem</span><span class="p">(</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">),</span>
@@ -1008,9 +1038,9 @@
 </span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">        </span><span class="n">every</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">someDataFLow1</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="n">returns</span><span class="w"> </span><span class="n">mockDataFlow1</span>
 </span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="p">}</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p>And a final function is a Preview itself:
-<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nd">@Composable</span>
+</p><div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nd">@Composable</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nd">@Preview</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="kd">private</span><span class="w"> </span><span class="kd">fun</span><span class="w"> </span><span class="nf">SomeScreenPreview</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="n">YourTheme</span><span class="w"> </span><span class="p">{</span>
@@ -1019,9 +1049,9 @@
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span><span class="p">)</span>
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="p">}</span>
-</span></code></pre></div></p>
-<hr />
-<p>So, that was a little trick. I hope it helps you in your work :)</p>
+</span></code></pre></div>
+<hr>
+<p>So, that was a little trick. I hope it helps you in your work :)</p></div>
 
 
 

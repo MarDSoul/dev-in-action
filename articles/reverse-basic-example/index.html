@@ -323,6 +323,8 @@
       
         
       
+        
+      
     
     
     
@@ -523,6 +525,34 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coil-coroutines-payment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Save money on image loading with Coil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -982,7 +1012,7 @@
 
 
 
-<h1 id="simple-example-of-reverse-apk-removing-ads">Simple example of reverse .apk (removing Ads)</h1>
+<div><h1 id="simple-example-of-reverse-apk-removing-ads">Simple example of reverse .apk (removing Ads)</h1>
 <p><strong>Date of publication:</strong> 10 Mar 2025</p>
 <p>Okay, today I gonna do some simple reverse engineering on Android application. As an example I get an amazing application <a href="https://play.google.com/store/apps/details?id=com.iraavanan.apkextractor">Apk Extractor Fastest &amp; Suppor</a></p>
 <h3 id="tools">Tools</h3>
@@ -993,26 +1023,26 @@
 </ul>
 <h3 id="process">Process</h3>
 <h4 id="get-apk-file-by-apk-extractor-fastest-suppor-itself">Get .apk file by <a href="https://play.google.com/store/apps/details?id=com.iraavanan.apkextractor">Apk Extractor Fastest &amp; Suppor</a> itself.</h4>
-<p><img alt="Main screen of APK Extractor" src="../../assets/images/reverse-basic-example/start-screen.png" /></p>
+<p><img alt="Main screen of APK Extractor" src="../../assets/images/reverse-basic-example/start-screen.png"></p>
 <p>What we see? We see a terrible Ads in so wonderful application.</p>
 <h4 id="discover-java-code">Discover Java code</h4>
 <ul>
 <li>open our .apk by <a href="https://github.com/skylot/jadx">JADX</a></li>
 </ul>
 <p>And we can see something like this:
-<img alt="JADX screen" src="../../assets/images/reverse-basic-example/jadx-interface.png" /></p>
+<img alt="JADX screen" src="../../assets/images/reverse-basic-example/jadx-interface.png"></p>
 <ul>
 <li>Fist of all we have to see <code>AndroidManifest.xml</code>.
 <em>Oh, bro, thanks a lot!</em>
 <div class="language-xml highlight"><span class="filename">XML</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">&lt;activity</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="na">android:name=</span><span class="s">&quot;com.iraavanan.apkextractor.ad.NoAdsActivity&quot;</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="na">android:screenOrientation=</span><span class="s">&quot;portrait&quot;</span><span class="nt">/&gt;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="na">android:name=</span><span class="s">"com.iraavanan.apkextractor.ad.NoAdsActivity"</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="na">android:screenOrientation=</span><span class="s">"portrait"</span><span class="nt">/&gt;</span>
 </span></code></pre></div></li>
 <li>Let's see <code>NoAdsActivity</code>, obviously. </li>
 </ul>
 <p>The path in the JADX is </p>
 <p><code>Source code/com.iraavanan.apkextractor.ad.NoAdsActivity</code>.
-<div class="language-java highlight"><span class="filename">Java</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onCreate</span><span class="p">(</span><span class="n">Bundle</span><span class="w"> </span><span class="n">bundle</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</p><div class="language-java highlight"><span class="filename">Java</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">protected</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">onCreate</span><span class="p">(</span><span class="n">Bundle</span><span class="w"> </span><span class="n">bundle</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="kd">super</span><span class="p">.</span><span class="na">onCreate</span><span class="p">(</span><span class="n">bundle</span><span class="p">);</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">setContentView</span><span class="p">(</span><span class="n">R</span><span class="p">.</span><span class="na">layout</span><span class="p">.</span><span class="na">activity_no_ads</span><span class="p">);</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="n">ActionBar</span><span class="w"> </span><span class="n">supportActionBar</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getSupportActionBar</span><span class="p">();</span>
@@ -1030,7 +1060,7 @@
 </span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1">// some code</span>
 </span></code></pre></div>
-<em>OMG, bro, do you really keep a premium flag in SharedPreferences?!</em></p>
+<em>OMG, bro, do you really keep a premium flag in SharedPreferences?!</em>
 <p><em>When I saw it I thought to get another example, but it's OK. It's simple and visible.</em></p>
 <h4 id="extract-and-change-smali-code">Extract and change Smali code</h4>
 <ul>
@@ -1080,12 +1110,12 @@
 <li><code>if-eqz v0, :cond_2</code> - if our result is <em>0(false)</em> the program go to <code>:cond_2</code></li>
 </ul>
 <p>Obviously, we have to change the result of function.
-<div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>move-result v0
+</p><div class="language-text highlight"><span class="filename">Text Only</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>move-result v0
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>const/4 v0, 0x1
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>if-eqz v0, :cond_2
-</span></code></pre></div></p>
+</span></code></pre></div>
 <h4 id="pack-to-apk">Pack to .apk</h4>
 <ul>
 <li>build an .apk file</li>
@@ -1105,16 +1135,16 @@
 - install changed version</p>
 <p><code>adb install apkextractor_signed.apk</code>
 - run</p>
-<p><img alt="Main screen of APK Extractor with Ads" src="../../assets/images/reverse-basic-example/start-screen-after-fix.png" /></p>
+<p><img alt="Main screen of APK Extractor with Ads" src="../../assets/images/reverse-basic-example/start-screen-after-fix.png"></p>
 <p><em>Hmm... something went wrong...</em></p>
 <p>Okay, maybe I should go to premium option in the app.</p>
-<p><img alt="Premium screen of APK Extractor" src="../../assets/images/reverse-basic-example/premium-screen.png" /></p>
+<p><img alt="Premium screen of APK Extractor" src="../../assets/images/reverse-basic-example/premium-screen.png"></p>
 <p>Let's recreate activity by <code>Back</code> button or rotate screen.</p>
-<p><img alt="Main screen of APK Extractor without Ads" src="../../assets/images/reverse-basic-example/start-screen-no-ads.png" /></p>
+<p><img alt="Main screen of APK Extractor without Ads" src="../../assets/images/reverse-basic-example/start-screen-no-ads.png"></p>
 <p>So... that's all, no Ads.</p>
-<hr />
+<hr>
 <p><em>What do I wanna say at the end? Don't keep premium flags inside the app.</em></p>
-<p><em>Thanks for your attention!</em></p>
+<p><em>Thanks for your attention!</em></p></div>
 
 
 

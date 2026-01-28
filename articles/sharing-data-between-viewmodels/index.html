@@ -323,6 +323,8 @@
       
         
       
+        
+      
     
     
     
@@ -523,6 +525,34 @@
           </ul>
         </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../coil-coroutines-payment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Save money on image loading with Coil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -943,50 +973,50 @@
 
 
 
-<h1 id="sharing-data-between-viewmodels-in-compose">Sharing data between ViewModels in Compose</h1>
+<div><h1 id="sharing-data-between-viewmodels-in-compose">Sharing data between ViewModels in Compose</h1>
 <p><strong>Date of publication:</strong> 28 Jan 2025</p>
 <p>This article was inspired by <a href="https://www.linkedin.com/posts/jihad-mahfouz-017615209_android-androiddevelopment-androiddev-activity-7286332516918054912-gprl?utm_source=share&amp;utm_medium=member_desktop&amp;lipi=urn%3Ali%3Apage%3Ad_flagship3_pulse_read%3BMP%2FP%2FOafQ3iodAg3iWmI4Q%3D%3D">this post and comments below</a>. I wanna write about some common patterns about sharing data. </p>
 <p><em>for code samples I'm using Hilt and Navigation frameworks</em></p>
-<hr />
+<hr>
 <h2 id="use-shared-view-model">Use shared view model</h2>
 <p><strong>Description:</strong> we use a single ViewModel with several screens.</p>
 <p>It looks something tike this:</p>
 <p><em>SharedViewModel</em></p>
 <div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@HiltViewModel</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kd">class</span><span class="w"> </span><span class="nc">SharedViewModel</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ViewModel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">_someString</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MutableStateFlow</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">_someString</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MutableStateFlow</span><span class="p">(</span><span class="s">""</span><span class="p">)</span>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">someString</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_someString</span><span class="p">.</span><span class="na">asStateFlow</span><span class="p">()</span>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
 </span></code></pre></div>
 <p><em>Screen1</em>
-<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@Composable</span>
+</p><div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@Composable</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">Screen1</span><span class="p">(</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="n">viewModel</span><span class="p">:</span><span class="w"> </span><span class="n">SharedViewModel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hiltViewModel</span><span class="p">()</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">someString</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">viewModel</span><span class="p">.</span><span class="na">someString</span><span class="p">.</span><span class="na">collectAsState</span><span class="p">()</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">}</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p><em>Screen2</em></p>
-<p><div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nd">@Composable</span>
+<p></p><div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nd">@Composable</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">Screen1</span><span class="p">(</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="n">viewModel</span><span class="p">:</span><span class="w"> </span><span class="n">SharedViewModel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hiltViewModel</span><span class="p">()</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">someString</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">viewModel</span><span class="p">.</span><span class="na">someString</span><span class="p">.</span><span class="na">collectAsState</span><span class="p">()</span>
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="p">}</span>
 </span></code></pre></div>
-So, what can I say? I just repeat my own words from comments of started post: </p>
+So, what can I say? I just repeat my own words from comments of started post: 
 <blockquote>
 <p>It's not the best approach. This way can be applied only for a small apps. When the app is becoming large, your viewmodel is becoming bigger and bigger. And one moment you can realize that the viewmodel is your data source in fact.</p>
 </blockquote>
 <p><strong>One thing I'd like to add:</strong> but generally there are a lot of situations when should use SharedViewModel. For instance, you have two screens that work with the same data (1st - for read, 2nd - for edit), it makes sense to use SharedViewModel in this case.</p>
-<hr />
+<hr>
 <h2 id="navigate-with-arguments">Navigate with arguments</h2>
 <p><strong>Description:</strong> we can pass a simple data like an argument in navigation route.</p>
 <p>It looks something like this:</p>
 <p><em>NavGraph</em></p>
 <div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kd">object</span><span class="w"> </span><span class="nc">NavDestinations</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">Screen1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Screen1&quot;</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">Screen2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Screen2&quot;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">Screen1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"Screen1"</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">Screen2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"Screen2"</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">}</span>
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
 </span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="nd">@Composable</span>
@@ -996,18 +1026,18 @@ So, what can I say? I just repeat my own words from comments of started post: </
 </span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">        </span><span class="n">composable</span><span class="p">(</span><span class="n">NavDestinations</span><span class="p">.</span><span class="na">Screen1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">            </span><span class="n">Screen1</span><span class="p">(</span><span class="n">navController</span><span class="p">)</span>
 </span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">        </span><span class="p">}</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">        </span><span class="n">composable</span><span class="p">(</span><span class="s">&quot;</span><span class="si">${</span><span class="n">NavDestinations</span><span class="p">.</span><span class="na">Screen2</span><span class="si">}</span><span class="s">/{id}&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">backStackEntry</span><span class="w"> </span><span class="o">-&gt;</span>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">            </span><span class="kd">val</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">backStackEntry</span><span class="p">.</span><span class="na">arguments</span><span class="o">?.</span><span class="na">getString</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">)</span><span class="o">!!</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">        </span><span class="n">composable</span><span class="p">(</span><span class="s">"</span><span class="si">${</span><span class="n">NavDestinations</span><span class="p">.</span><span class="na">Screen2</span><span class="si">}</span><span class="s">/{id}"</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">backStackEntry</span><span class="w"> </span><span class="o">-&gt;</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">            </span><span class="kd">val</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">backStackEntry</span><span class="p">.</span><span class="na">arguments</span><span class="o">?.</span><span class="na">getString</span><span class="p">(</span><span class="s">"id"</span><span class="p">)</span><span class="o">!!</span>
 </span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">            </span><span class="n">Screen2</span><span class="p">(</span><span class="n">navController</span><span class="p">)</span>
 </span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">        </span><span class="p">}</span>
 </span></code></pre></div>
 <p><em>Screen2ViewModel</em>
-<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nd">@HiltViewModel</span>
+</p><div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nd">@HiltViewModel</span>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kd">class</span><span class="w"> </span><span class="nc">Screen2ViewModel</span><span class="w"> </span><span class="nd">@Inject</span><span class="w"> </span><span class="k">constructor</span><span class="p">(</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="n">savedStateHandle</span><span class="p">:</span><span class="w"> </span><span class="n">SavedStateHandle</span><span class="p">,</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">getDataUseCase</span><span class="p">:</span><span class="w"> </span><span class="n">GetDataUseCase</span>
 </span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">ViewModel</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">savedStateHandle</span><span class="p">.</span><span class="na">get</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">?:</span><span class="w"> </span><span class="m">0</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">val</span><span class="w"> </span><span class="nv">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">savedStateHandle</span><span class="p">.</span><span class="na">get</span><span class="o">&lt;</span><span class="kt">Int</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"id"</span><span class="p">)</span><span class="w"> </span><span class="o">?:</span><span class="w"> </span><span class="m">0</span>
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="kd">val</span><span class="w"> </span><span class="nv">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getDataUseCase</span><span class="p">.</span><span class="na">getDataById</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">        </span><span class="p">.</span><span class="na">stateIn</span><span class="p">(</span>
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">            </span><span class="n">scope</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">viewModelScope</span><span class="p">,</span>
@@ -1015,7 +1045,7 @@ So, what can I say? I just repeat my own words from comments of started post: </
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">            </span><span class="n">initialValue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Data</span><span class="p">()</span>
 </span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">        </span><span class="p">)</span>
 </span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="p">}</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p><em>Screen1</em></p>
 <div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nd">@Composable</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">Screen1</span><span class="p">(</span>
@@ -1025,13 +1055,13 @@ So, what can I say? I just repeat my own words from comments of started post: </
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c1">// some code</span>
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="n">Button</span><span class="p">(</span>
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="n">onClick</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">            </span><span class="n">navController</span><span class="p">.</span><span class="na">navigate</span><span class="p">(</span><span class="n">NavDestinations</span><span class="p">.</span><span class="na">Screen2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;/</span><span class="si">${</span><span class="n">data</span><span class="p">.</span><span class="na">id</span><span class="si">}</span><span class="s">&quot;</span><span class="p">)</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">            </span><span class="n">navController</span><span class="p">.</span><span class="na">navigate</span><span class="p">(</span><span class="n">NavDestinations</span><span class="p">.</span><span class="na">Screen2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"/</span><span class="si">${</span><span class="n">data</span><span class="p">.</span><span class="na">id</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
 </span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">        </span><span class="p">}</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Text</span><span class="p">(</span><span class="s">&quot;Click me&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">Text</span><span class="p">(</span><span class="s">"Click me"</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
 </span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="p">}</span>
 </span></code></pre></div>
 <p><em>Screen2</em>
-<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nd">@Composable</span>
+</p><div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nd">@Composable</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kd">fun</span><span class="w"> </span><span class="nf">Screen2</span><span class="p">(</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="n">navController</span><span class="p">:</span><span class="w"> </span><span class="n">NavController</span><span class="p">,</span>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="n">dataViewModel</span><span class="p">:</span><span class="w"> </span><span class="n">Screen2ViewModel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hiltViewModel</span><span class="p">()</span>
@@ -1040,20 +1070,20 @@ So, what can I say? I just repeat my own words from comments of started post: </
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1">// some code</span>
 </span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="p">}</span>
 </span></code></pre></div>
-More details you may see in <a href="https://sagar0-0.medium.com/pass-arguments-to-destinations-jetpack-compose-navigation-7c29d4c73ce5">this article</a>, for example.</p>
+More details you may see in <a href="https://sagar0-0.medium.com/pass-arguments-to-destinations-jetpack-compose-navigation-7c29d4c73ce5">this article</a>, for example.
 <p>It's an old approach and not actual now because we've got a <a href="https://developer.android.com/jetpack/androidx/releases/navigation#2.8.5">stable release</a> of Navigation library in Dec 2024.</p>
-<hr />
+<hr>
 <h2 id="navigate-with-data">Navigate with data</h2>
 <p>Ok, next we can send an object. <a href="https://developer.android.com/develop/ui/compose/navigation#nav-with-args">link to docs</a></p>
 <p>I don't know should I copy code from Google docs or not. Okay, make a copy for collecting in one place.</p>
 <p><em>Serializable object</em>
-<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nd">@Serializable</span>
+</p><div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nd">@Serializable</span>
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="kd">data</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nc">Profile</span><span class="p">(</span><span class="kd">val</span><span class="w"> </span><span class="nv">name</span><span class="p">:</span><span class="w"> </span><span class="kt">String</span><span class="p">)</span>
-</span></code></pre></div></p>
+</span></code></pre></div>
 <p><em>NavDestination</em>
-<div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">// Pass only the user ID when navigating to a new destination as argument</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">navController</span><span class="p">.</span><span class="na">navigate</span><span class="p">(</span><span class="n">Profile</span><span class="p">(</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;user1234&quot;</span><span class="p">))</span>
-</span></code></pre></div></p>
+</p><div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">// Pass only the user ID when navigating to a new destination as argument</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">navController</span><span class="p">.</span><span class="na">navigate</span><span class="p">(</span><span class="n">Profile</span><span class="p">(</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"user1234"</span><span class="p">))</span>
+</span></code></pre></div>
 <p><em>ViewModel</em></p>
 <div class="language-kotlin highlight"><span class="filename">Kotlin</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kd">class</span><span class="w"> </span><span class="nc">UserViewModel</span><span class="p">(</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="n">savedStateHandle</span><span class="p">:</span><span class="w"> </span><span class="n">SavedStateHandle</span><span class="p">,</span>
@@ -1073,7 +1103,7 @@ More details you may see in <a href="https://sagar0-0.medium.com/pass-arguments-
 <p>So, you can send "primitive" types, string, recourse reference, parcelable, serializable end enum types. <a href="https://developer.android.com/guide/navigation/use-graph/pass-data#supported_argument_types">link to docs</a></p>
 <p><strong>One thing I'd like to add:</strong> I don't know how it works right now, but before the stable release it was a real challenge to send complex serializable object. It wasn't worth it.</p>
 <p><strong>My advice:</strong> if you need to send something, send a small piece of data such as "id" and get information from a normal data-source.</p>
-<hr />
+<hr>
 <h2 id="use-repository-in-data-layer">Use repository in data layer</h2>
 <p><strong>The main concept:</strong> Make a repository, inside of repository make a StateFlow with value. So, ViewModels subscribe to flow. Add a function with emit value in the repo. As a result we have a single data source and necessary amount ViewModels that don't depend on each other.</p>
 <p>Quote by <a href="https://www.linkedin.com/in/jihad-mahfouz-017615209/?lipi=urn%3Ali%3Apage%3Ad_flagship3_pulse_read%3BMP%2FP%2FOafQ3iodAg3iWmI4Q%3D%3D">Jihad Mahfouz</a></p>
@@ -1161,8 +1191,8 @@ More details you may see in <a href="https://sagar0-0.medium.com/pass-arguments-
 </span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="p">}</span>
 </span></code></pre></div>
 <p>As you see, sometimes using a repository for data exchange is justified.</p>
-<hr />
-<p>So, that's all for now. Thanks for your attention :)</p>
+<hr>
+<p>So, that's all for now. Thanks for your attention :)</p></div>
 
 
 
