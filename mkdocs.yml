@@ -38,6 +38,7 @@ nav:
             - Intro (Part 1). Example with independent features: articles/arch-principles/android-ca-independent-features.md
             - Going ahead (Part 2). Example with complex navigation: articles/arch-principles/android-ca-complex-navigation.md
             - More about CA (Part 3). Example with cross-cutting features: articles/arch-principles/android-ca-cross-cutting-features.md
+        - Save money on image loading with Coil: articles/coil-coroutines-payment.md
         - Hilt for beginners: articles/hilt-for-beginners.md
         - Integration Unity AR to Compose: articles/unity-ar-integration-compose.md
         - Implementing Chaos-Proof Custom Typography in Compose: articles/compose-custom-typography-system.md
@@ -61,6 +62,7 @@ markdown_extensions:
     - pymdownx.inlinehilite
     - pymdownx.snippets
     - pymdownx.superfences
+    - pymdownx.details
     - admonition
     - attr_list
     - meta
@@ -69,3 +71,4 @@ plugins:
     - redirects
     - plantuml:
         puml_url: https://www.plantuml.com/plantuml/
+    - mkdocs-video
