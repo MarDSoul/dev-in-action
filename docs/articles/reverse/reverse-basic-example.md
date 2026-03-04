@@ -11,7 +11,7 @@ Okay, today I gonna do some simple reverse engineering on Android application. A
 ### Process
 
 #### Get .apk file by [Apk Extractor Fastest & Suppor](https://play.google.com/store/apps/details?id=com.iraavanan.apkextractor) itself.
-![Main screen of APK Extractor](../assets/images/reverse-basic-example/start-screen.png)
+![Main screen of APK Extractor](../../assets/images/reverse-basic-example/start-screen.png)
 
 What we see? We see a terrible Ads in so wonderful application.
 
@@ -19,20 +19,21 @@ What we see? We see a terrible Ads in so wonderful application.
 - open our .apk by [JADX](https://github.com/skylot/jadx)
 
 And we can see something like this:
-![JADX screen](../assets/images/reverse-basic-example/jadx-interface.png)
+![JADX screen](../../assets/images/reverse-basic-example/jadx-interface.png)
 
 - Fist of all we have to see `AndroidManifest.xml`.
 *Oh, bro, thanks a lot!*
+
 ```xml
 <activity
 android:name="com.iraavanan.apkextractor.ad.NoAdsActivity"
 android:screenOrientation="portrait"/>
 ```
+
 - Let's see `NoAdsActivity`, obviously. 
 
-The path in the JADX is 
+The path in the JADX is `Source code/com.iraavanan.apkextractor.ad.NoAdsActivity`.
 
-`Source code/com.iraavanan.apkextractor.ad.NoAdsActivity`.
 ```java
 protected void onCreate(Bundle bundle) {
     super.onCreate(bundle);
@@ -52,6 +53,7 @@ protected void onCreate(Bundle bundle) {
     }
 // some code
 ```
+
 *OMG, bro, do you really keep a premium flag in SharedPreferences?!*
 
 *When I saw it I thought to get another example, but it's OK. It's simple and visible.*
@@ -117,38 +119,38 @@ if-eqz v0, :cond_2
 
 #### Pack to .apk
 - build an .apk file
-
 `/opt/apktool/apktool b ApkExtractor_com.iraavanan.apkextractor -o apkextractor.apk`
+
 - compress .apk
-
 `zipalign -v -p 4 apkextractor.apk apkextractor_compressed.apk`
+
 - create key for signing by [keytool](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/keytool.html#keytool_option_genkeypair)
-
 `keytool -genkeypair -v -keystore release-key.keystore -alias apkextractor -keyalg RSA -keysize 2048`
-- sign
 
+- sign
 `apksigner sign --ks release-key.keystore --ks-key-alias apkextractor --out apkextractor_signed.apk apkextractor_compressed.apk`
 
 #### Install and run
+
 - remove the base app version
-
 `adb uninstall com.iraavanan.apkextractor`
-- install changed version
 
+- install changed version
 `adb install apkextractor_signed.apk`
+
 - run
 
-![Main screen of APK Extractor with Ads](../assets/images/reverse-basic-example/start-screen-after-fix.png)
+![Main screen of APK Extractor with Ads](../../assets/images/reverse-basic-example/start-screen-after-fix.png)
 
 *Hmm... something went wrong...*
 
 Okay, maybe I should go to premium option in the app.
 
-![Premium screen of APK Extractor](../assets/images/reverse-basic-example/premium-screen.png)
+![Premium screen of APK Extractor](../../assets/images/reverse-basic-example/premium-screen.png)
 
 Let's recreate activity by `Back` button or rotate screen.
 
-![Main screen of APK Extractor without Ads](../assets/images/reverse-basic-example/start-screen-no-ads.png)
+![Main screen of APK Extractor without Ads](../../assets/images/reverse-basic-example/start-screen-no-ads.png)
 
 So... that's all, no Ads.
 
