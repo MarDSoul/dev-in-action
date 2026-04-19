@@ -35,18 +35,22 @@ nav:
     - Articles:
         - Overview:  articles/index.md
         - Android Clean Architecture in Action:
-            - Intro (Part 1). Example with independent features: articles/arch-principles/android-ca-independent-features.md
-            - Going ahead (Part 2). Example with complex navigation: articles/arch-principles/android-ca-complex-navigation.md
-            - More about CA (Part 3). Example with cross-cutting features: articles/arch-principles/android-ca-cross-cutting-features.md
-        - Save money on image loading with Coil: articles/coil-coroutines-payment.md
-        - Hilt for beginners: articles/hilt-for-beginners.md
-        - Integration Unity AR to Compose: articles/unity-ar-integration-compose.md
-        - Implementing Chaos-Proof Custom Typography in Compose: articles/compose-custom-typography-system.md
-        - Using MockK library in Jetpack Compose Preview: articles/using-mockk-preview.md
-        - Simple example of reverse .apk: articles/reverse-basic-example.md
-        - Sharing data between ViewModels: articles/sharing-data-between-viewmodels.md
+          - Intro (Part 1). Example with independent features: articles/arch-principles/android-ca-independent-features.md
+          - Going ahead (Part 2). Example with complex navigation: articles/arch-principles/android-ca-complex-navigation.md
+          - More about CA (Part 3). Example with cross-cutting features: articles/arch-principles/android-ca-cross-cutting-features.md
+        - Practical Engineering:
+          - Save money on image loading with Coil: articles/coil-coroutines-payment.md
+          - Hilt for beginners: articles/hilt-for-beginners.md
+          - Integration Unity AR to Compose: articles/unity-ar-integration-compose.md
+          - Implementing Chaos-Proof Custom Typography in Compose: articles/compose-custom-typography-system.md
+          - Using MockK library in Jetpack Compose Preview: articles/using-mockk-preview.md
+          - Sharing data between ViewModels: articles/sharing-data-between-viewmodels.md
+        - Reverse Engineering and Interoperability:
+          - GOTO is Okay: articles/reverse/goto-is-okay.md
+          - Simple example of reverse .apk: articles/reverse/reverse-basic-example.md
     - Notes:
         - Overview: notes/index.md
+        - Script Gradle auto-clean: notes/cron-gradle-autoclean.md
         - Coroutines Auto-cancel pattern: notes/coroutines-auto-cancel-pattern.md
         - Flexible Enums via Inline classes: notes/flexible-enums-inline-class.md
 
