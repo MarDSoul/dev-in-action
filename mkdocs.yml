@@ -50,7 +50,6 @@ nav:
           - Simple example of reverse .apk: articles/reverse/reverse-basic-example.md
     - Notes:
         - Overview: notes/index.md
-        - Script Gradle auto-clean: notes/cron-gradle-autoclean.md
         - Coroutines Auto-cancel pattern: notes/coroutines-auto-cancel-pattern.md
         - Flexible Enums via Inline classes: notes/flexible-enums-inline-class.md
 
