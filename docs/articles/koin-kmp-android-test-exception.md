@@ -1,4 +1,4 @@
-# Fixing `RuntimeException` caused by `InitializationProvider` in *KMP/Koin* integration tests
+# Fixing RuntimeException caused by InitializationProvider in KMP/Koin integration tests
 **Date of publication:** 24 Jun 2026
 
 ## Problem
