@@ -39,6 +39,7 @@ nav:
           - Going ahead (Part 2). Example with complex navigation: articles/arch-principles/android-ca-complex-navigation.md
           - More about CA (Part 3). Example with cross-cutting features: articles/arch-principles/android-ca-cross-cutting-features.md
         - Practical Engineering:
+          - Fixing RuntimeException in KMP Android integration tests: articles/koin-kmp-android-test-exception.md
           - Save money on image loading with Coil: articles/coil-coroutines-payment.md
           - Hilt for beginners: articles/hilt-for-beginners.md
           - Integration Unity AR to Compose: articles/unity-ar-integration-compose.md
